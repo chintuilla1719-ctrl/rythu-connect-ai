@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rythu Connect AI - Farm to Table Direct Connection</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">🌾 Rythu Connect AI</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#" onclick="logout()">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="authSection" class="auth-section">
+        <div class="hero">
+            <h1>Welcome to Rythu Connect AI</h1>
+            <p>Direct connection between Farmers and Buyers</p>
+            <div class="role-buttons">
+                <button class="btn btn-primary" onclick="showFarmerAuth()">I'm a Farmer</button>
+                <button class="btn btn-success" onclick="showBuyerAuth()">I'm a Buyer</button>
+            </div>
+        </div>
+
+        <!-- Farmer Auth Modal -->
+        <div id="farmerAuthModal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close" onclick="closeFarmerAuth()">&times;</span>
+                <div class="auth-tabs">
+                    <button class="tab-btn active" onclick="switchTab('farmer', 'login')">Login</button>
+                    <button class="tab-btn" onclick="switchTab('farmer', 'register')">Register</button>
+                </div>
+                
+                <div id="farmerLoginTab" class="tab-content">
+                    <h2>Farmer Login</h2>
+                    <input type="email" id="farmerLoginEmail" placeholder="Email">
+                    <input type="password" id="farmerLoginPassword" placeholder="Password">
+                    <button class="btn btn-primary" onclick="farmerLogin()">Login</button>
+                </div>
+
+                <div id="farmerRegisterTab" class="tab-content hidden">
+                    <h2>Farmer Registration</h2>
+                    <input type="text" id="farmerName" placeholder="Full Name">
+                    <input type="email" id="farmerEmail" placeholder="Email">
+                    <input type="password" id="farmerPassword" placeholder="Password">
+                    <input type="tel" id="farmerPhone" placeholder="Phone Number">
+                    <input type="text" id="farmerVillage" placeholder="Village">
+                    <input type="text" id="farmerState" placeholder="State">
+                    <button class="btn btn-primary" onclick="farmerRegister()">Register</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Buyer Auth Modal -->
+        <div id="buyerAuthModal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close" onclick="closeBuyerAuth()">&times;</span>
+                <div class="auth-tabs">
+                    <button class="tab-btn active" onclick="switchTab('buyer', 'login')">Login</button>
+                    <button class="tab-btn" onclick="switchTab('buyer', 'register')">Register</button>
+                </div>
+                
+                <div id="buyerLoginTab" class="tab-content">
+                    <h2>Buyer Login</h2>
+                    <input type="email" id="buyerLoginEmail" placeholder="Email">
+                    <input type="password" id="buyerLoginPassword" placeholder="Password">
+                    <button class="btn btn-success" onclick="buyerLogin()">Login</button>
+                </div>
+
+                <div id="buyerRegisterTab" class="tab-content hidden">
+                    <h2>Buyer Registration</h2>
+                    <input type="text" id="buyerName" placeholder="Full Name">
+                    <input type="email" id="buyerEmail" placeholder="Email">
+                    <input type="password" id="buyerPassword" placeholder="Password">
+                    <input type="tel" id="buyerPhone" placeholder="Phone Number">
+                    <input type="text" id="buyerVillage" placeholder="Village/City">
+                    <input type="text" id="buyerState" placeholder="State">
+                    <button class="btn btn-success" onclick="buyerRegister()">Register</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="dashboardSection" class="hidden">
+        <div id="farmerDashboard" class="hidden">
+            <iframe id="farmerFrame" src="farmer.html" style="width:100%; height:100vh; border:none;"></iframe>
+        </div>
+        <div id="buyerDashboard" class="hidden">
+            <iframe id="buyerFrame" src="buyer.html" style="width:100%; height:100vh; border:none;"></iframe>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
