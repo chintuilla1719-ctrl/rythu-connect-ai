@@ -104,11 +104,12 @@
         }
 
         .crop-image {
-            width: 100%;
-            height: 200px;
-            background: #eee;
-            object-fit: cover;
-        }
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+    background: #f0f0f0;
+}
 
         .crop-details {
             padding: 15px;
@@ -187,10 +188,10 @@
         <div id="message" class="message"></div>
 
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchFarmerTab('crops')">My Crops</button>
-            <button class="tab-btn" onclick="switchFarmerTab('add')">Add New Crop</button>
-            <button class="tab-btn" onclick="switchFarmerTab('orders')">Orders</button>
-            <button class="tab-btn" onclick="switchFarmerTab('profile')">Profile</button>
+            <button class="tab-btn active" onclick="switchFarmerTab('crops', event)">My Crops</button>
+            <button class="tab-btn" onclick="switchFarmerTab('add', event)">Add New Crop</button>
+            <button class="tab-btn" onclick="switchFarmerTab('orders', event)">Orders</button>
+            <button class="tab-btn" onclick="switchFarmerTab('profile', event)">Profile</button>
         </div>
 
         <!-- My Crops Tab -->
@@ -247,7 +248,7 @@
                     <input type="text" id="certifications" placeholder="e.g., Organic, Non-GMO">
                 </div>
 
-                <button type="submit" class="btn btn-primary">Add Crop</button>
+                <button id="cropFormButton" type="submit" class="btn btn-primary">Add Crop</button>
             </form>
         </div>
 
@@ -299,6 +300,7 @@
     <script>
         let currentFarmerId = localStorage.getItem('userId');
         let currentFarmerName = localStorage.getItem('userName');
+        let currentEditCropId = null;
 
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('farmerNameDisplay').textContent = `Welcome, ${currentFarmerName}!`;
@@ -307,65 +309,131 @@
             loadFarmerProfile();
         });
 
-        function switchFarmerTab(tabName) {
+        function switchFarmerTab(tabName, event) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(tabName + 'Tab').classList.add('active');
-            event.target.classList.add('active');
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+        }
+
+        function resetCropForm() {
+            currentEditCropId = null;
+            document.getElementById('cropFormButton').textContent = 'Add Crop';
+            document.getElementById('cropName').value = '';
+            document.getElementById('cropDescription').value = '';
+            document.getElementById('cropQuantity').value = '';
+            document.getElementById('cropUnit').value = 'kg';
+            document.getElementById('cropPrice').value = '';
+            document.getElementById('cropImage').value = '';
+            document.getElementById('harvestDate').value = '';
+            document.getElementById('certifications').value = '';
         }
 
         function addCrop(e) {
             e.preventDefault();
-            const cropData = {
-                farmerId: currentFarmerId,
-                farmerName: currentFarmerName,
-                cropName: document.getElementById('cropName').value,
-                description: document.getElementById('cropDescription').value,
-                quantity: parseInt(document.getElementById('cropQuantity').value),
-                unit: document.getElementById('cropUnit').value,
-                pricePerUnit: parseFloat(document.getElementById('cropPrice').value),
-                harvestDate: document.getElementById('harvestDate').value,
-                certifications: document.getElementById('certifications').value.split(',').map(c => c.trim()),
-                village: localStorage.getItem('userVillage'),
-                state: localStorage.getItem('userState')
-            };
+            const imageFile = document.getElementById('cropImage').files[0];
+            const formData = new FormData();
 
-            fetch('http://localhost:5000/api/crops', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(cropData)
+            formData.append('farmerId', currentFarmerId);
+            formData.append('farmerName', currentFarmerName);
+            formData.append('cropName', document.getElementById('cropName').value);
+            formData.append('description', document.getElementById('cropDescription').value);
+            formData.append('quantity', document.getElementById('cropQuantity').value);
+            formData.append('unit', document.getElementById('cropUnit').value);
+            formData.append('pricePerUnit', document.getElementById('cropPrice').value);
+            formData.append('harvestDate', document.getElementById('harvestDate').value);
+            formData.append('certifications', document.getElementById('certifications').value);
+            formData.append('village', localStorage.getItem('userVillage'));
+            formData.append('state', localStorage.getItem('userState'));
+
+            if (imageFile) {
+                formData.append('cropImage', imageFile);
+            }
+
+            const method = currentEditCropId ? 'PUT' : 'POST';
+            const url = currentEditCropId ? `http://localhost:5000/api/crops/${currentEditCropId}` : 'http://localhost:5000/api/crops';
+
+            fetch(url, {
+                method,
+                body: formData
             })
             .then(r => r.json())
             .then(data => {
-                showMessage('Crop added successfully!', 'success');
-                e.target.reset();
+                if (data.error) throw new Error(data.error);
+                showMessage(currentEditCropId ? 'Crop updated successfully!' : 'Crop added successfully!', 'success');
+                resetCropForm();
                 loadFarmerCrops();
+                switchFarmerTab('crops');
             })
-            .catch(err => showMessage('Error adding crop', 'error'));
+            .catch(err => showMessage('Error saving crop: ' + err.message, 'error'));
         }
 
-        function loadFarmerCrops() {
-            fetch(`http://localhost:5000/api/crops?farmerId=${currentFarmerId}`)
-                .then(r => r.json())
-                .then(crops => {
-                    const grid = document.getElementById('cropsGrid');
-                    grid.innerHTML = crops.map(crop => `
-                        <div class="crop-card">
-                            <img src="${crop.cropImage || 'https://via.placeholder.com/300x200'}" class="crop-image">
-                            <div class="crop-details">
-                                <div class="crop-name">${crop.cropName}</div>
-                                <div class="crop-info"><strong>Quantity:</strong> ${crop.quantity} ${crop.unit}</div>
-                                <div class="crop-price">₹${crop.pricePerUnit}/${crop.unit}</div>
-                                <div class="crop-actions">
-                                    <button class="btn btn-primary" onclick="editCrop('${crop._id}')">Edit</button>
-                                    <button class="btn btn-danger" onclick="deleteCrop('${crop._id}')">Delete</button>
-                                </div>
-                            </div>
+       function loadFarmerCrops() {
+    fetch(`http://localhost:5000/api/crops?farmerId=${currentFarmerId}`)
+        .then(response => response.json())
+        .then(crops => {
+            const grid = document.getElementById('cropsGrid');
+
+            if (!crops.length) {
+                grid.innerHTML = `
+                    <div style="padding:20px;background:white;border-radius:10px;">
+                        No crops added yet.
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = crops.map(crop => `
+                <div class="crop-card">
+
+                    <img
+                        src="${crop.cropImage && crop.cropImage.trim() !== '' ? crop.cropImage : 'https://via.placeholder.com/300x200'}"
+                        alt="${crop.cropName}"
+                        class="crop-image"
+                        onerror="this.src='https://via.placeholder.com/300x200'"
+                    >
+
+                    <div class="crop-details">
+                        <div class="crop-name">${crop.cropName}</div>
+
+                        <div class="crop-info">
+                            <strong>Quantity:</strong>
+                            ${crop.quantity} ${crop.unit}
                         </div>
-                    `).join('');
-                });
-        }
 
+                        <div class="crop-info">
+                            <strong>Location:</strong>
+                            ${crop.village || ''}, ${crop.state || ''}
+                        </div>
+
+                        <div class="crop-price">
+                            ₹${crop.pricePerUnit}/${crop.unit}
+                        </div>
+
+                        <div class="crop-actions">
+                            <button
+                                class="btn btn-primary"
+                                onclick="editCrop('${crop._id}')">
+                                Edit
+                            </button>
+
+                            <button
+                                class="btn btn-danger"
+                                onclick="deleteCrop('${crop._id}')">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            `).join('');
+        })
+        .catch(error => {
+            console.error(error);
+        });
+}
         function loadFarmerOrders() {
             fetch(`http://localhost:5000/api/orders?farmerId=${currentFarmerId}`)
                 .then(r => r.json())
@@ -404,7 +472,23 @@
         }
 
         function editCrop(cropId) {
-            alert('Edit feature coming soon!');
+            fetch(`http://localhost:5000/api/crops/${cropId}`)
+                .then(r => r.json())
+                .then(crop => {
+                    currentEditCropId = cropId;
+                    document.getElementById('cropFormButton').textContent = 'Update Crop';
+                    switchFarmerTab('add');
+
+                    document.getElementById('cropName').value = crop.cropName || '';
+                    document.getElementById('cropDescription').value = crop.description || '';
+                    document.getElementById('cropQuantity').value = crop.quantity || '';
+                    document.getElementById('cropUnit').value = crop.unit || 'kg';
+                    document.getElementById('cropPrice').value = crop.pricePerUnit || '';
+                    document.getElementById('harvestDate').value = crop.harvestDate ? crop.harvestDate.split('T')[0] : '';
+                    document.getElementById('certifications').value = (crop.certifications || []).join(', ');
+                    document.getElementById('cropImage').value = '';
+                })
+                .catch(err => showMessage('Could not load crop for editing', 'error'));
         }
 
         function deleteCrop(cropId) {

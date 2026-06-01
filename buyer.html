@@ -88,11 +88,12 @@
         }
 
         .crop-image {
-            width: 100%;
-            height: 200px;
-            background: #eee;
-            object-fit: cover;
-        }
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+    background: #f0f0f0;
+}
 
         .crop-details {
             padding: 15px;
@@ -389,14 +390,21 @@
         </div>
     </div>
 
-    <script src="../script.js"></script>
+    <script src="script.js"></script>
     <script>
         let currentBuyerId = localStorage.getItem('userId');
-        let currentBuyerName = localStorage.getItem('userName');
         let selectedCrop = null;
 
+        function getBuyerDisplayName() {
+            const stored = localStorage.getItem('userName');
+            if (!stored || stored === 'null' || stored === 'undefined') {
+                return 'Buyer';
+            }
+            return stored;
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('buyerNameDisplay').textContent = `Welcome, ${currentBuyerName}!`;
+            document.getElementById('buyerNameDisplay').textContent = `Welcome, ${getBuyerDisplayName()}!`;
             loadAllCrops();
             loadBuyerOrders();
             loadBuyerProfile();
@@ -419,7 +427,10 @@
             const grid = document.getElementById('cropsGrid');
             grid.innerHTML = crops.map(crop => `
                 <div class="crop-card">
-                    <img src="${crop.cropImage || 'https://via.placeholder.com/300x200'}" class="crop-image">
+                    <img src="${crop.cropImage && crop.cropImage.trim() !== '' ? crop.cropImage : 'https://via.placeholder.com/300x200'}"
+                        class="crop-image"
+                        onerror="this.src='https://via.placeholder.com/300x200'"
+                    >
                     <div class="crop-details">
                         <div class="crop-name">${crop.cropName}</div>
                         <div class="farmer-info">👨‍🌾 ${crop.farmerName}<br>📍 ${crop.village}, ${crop.state}</div>

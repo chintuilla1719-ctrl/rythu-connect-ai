@@ -1,12 +1,29 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const multer = require("multer");
+const fs = require("fs");
 const path = require("path");
 require("dotenv").config();
 
 const app = express();
 
 const staticRoot = path.resolve(__dirname);
+const uploadDir = path.join(staticRoot, "uploads");
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => cb(null, uploadDir),
+    filename: (req, file, cb) => {
+        const extension = path.extname(file.originalname);
+        cb(null, `${Date.now()}-${file.fieldname}${extension}`);
+    }
+});
+
+const upload = multer({ storage });
+
 app.use(cors());
 app.use(express.json());
 app.use(express.static(staticRoot));
@@ -48,7 +65,7 @@ const cropSchema = new mongoose.Schema({
     quantity: Number,
     unit: { type: String, default: "kg" },
     pricePerUnit: Number,
-    cropImage: String,
+    cropImage: { type: String, default: "https://via.placeholder.com/300x200" },
     village: String,
     state: String,
     harvestDate: Date,
@@ -98,22 +115,59 @@ app.post("/api/auth/register", async (req, res) => {
 app.post("/api/auth/login", async (req, res) => {
     try {
         const { email, password } = req.body;
+
+        console.log("Email entered:", email);
+
         const user = await User.findOne({ email });
-        
+
+        console.log("User found:", user);
+
         if (!user || user.password !== password) {
-            return res.status(400).json({ error: "Invalid credentials" });
+            return res.status(400).json({
+                error: "Invalid credentials"
+            });
         }
-        
-        res.json({ message: "Login successful", user: { _id: user._id, email: user.email, role: user.role, fullName: user.fullName, village: user.village, state: user.state } });
+
+        res.json({
+            message: "Login successful",
+            user: {
+                _id: user._id,
+                email: user.email,
+                role: user.role,
+                fullName: user.fullName,
+                village: user.village,
+                state: user.state
+            }
+        });
+
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
 
 // CROP ROUTES
-app.post("/api/crops", async (req, res) => {
+app.post("/api/crops", upload.single("cropImage"), async (req, res) => {
     try {
-        const crop = new Crop(req.body);
+        const certifications = req.body.certifications
+            ? String(req.body.certifications).split(",").map(c => c.trim()).filter(Boolean)
+            : [];
+
+        const cropData = {
+            farmerId: req.body.farmerId,
+            farmerName: req.body.farmerName,
+            cropName: req.body.cropName,
+            description: req.body.description,
+            quantity: Number(req.body.quantity),
+            unit: req.body.unit || "kg",
+            pricePerUnit: Number(req.body.pricePerUnit),
+            village: req.body.village,
+            state: req.body.state,
+            harvestDate: req.body.harvestDate || undefined,
+            certifications,
+            cropImage: req.file ? `/uploads/${req.file.filename}` : "https://via.placeholder.com/300x200"
+        };
+
+        const crop = new Crop(cropData);
         await crop.save();
         res.json({ message: "Crop listed successfully", crop });
     } catch (error) {
@@ -151,9 +205,31 @@ app.get("/api/crops/:id", async (req, res) => {
     }
 });
 
-app.put("/api/crops/:id", async (req, res) => {
+app.put("/api/crops/:id", upload.single("cropImage"), async (req, res) => {
     try {
-        const crop = await Crop.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const certifications = req.body.certifications
+            ? String(req.body.certifications).split(",").map(c => c.trim()).filter(Boolean)
+            : undefined;
+
+        const updateData = {
+            cropName: req.body.cropName,
+            description: req.body.description,
+            quantity: req.body.quantity ? Number(req.body.quantity) : undefined,
+            unit: req.body.unit,
+            pricePerUnit: req.body.pricePerUnit ? Number(req.body.pricePerUnit) : undefined,
+            village: req.body.village,
+            state: req.body.state,
+            harvestDate: req.body.harvestDate || undefined,
+            certifications,
+        };
+
+        if (req.file) {
+            updateData.cropImage = `/uploads/${req.file.filename}`;
+        }
+
+        Object.keys(updateData).forEach(key => updateData[key] === undefined && delete updateData[key]);
+
+        const crop = await Crop.findByIdAndUpdate(req.params.id, updateData, { new: true });
         res.json({ message: "Crop updated successfully", crop });
     } catch (error) {
         res.status(500).json({ error: error.message });

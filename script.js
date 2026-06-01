@@ -77,16 +77,20 @@ function farmerLogin() {
     const email = document.getElementById('farmerLoginEmail').value;
     const password = document.getElementById('farmerLoginPassword').value;
 
-    fetch(`${API_URL}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-    })
-    .then(r => r.json())
-    .then(res => {
-        if (res.error) {
+   fetch(`${API_URL}/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+})
+.then(r => r.json())
+.then(res => {
+
+    console.log("LOGIN RESPONSE:", res);
+
+    if (res.error) {
             alert('Login failed: ' + res.error);
         } else {
+            console.log("User data:", res.user);
             localStorage.setItem('userId', res.user._id);
             localStorage.setItem('userName', res.user.fullName);
             localStorage.setItem('userRole', 'farmer');
@@ -97,6 +101,10 @@ function farmerLogin() {
             document.getElementById('dashboardSection').classList.remove('hidden');
             document.getElementById('farmerDashboard').classList.remove('hidden');
             closeFarmerAuth();
+            const farmerFrame = document.getElementById('farmerFrame');
+            if (farmerFrame && farmerFrame.contentWindow) {
+                farmerFrame.contentWindow.location.reload();
+            }
         }
     })
     .catch(err => alert('Error: ' + err));
@@ -152,8 +160,9 @@ function buyerLogin() {
         if (res.error) {
             alert('Login failed: ' + res.error);
         } else {
+            const buyerName = res.user.fullName || res.user.email || 'Buyer';
             localStorage.setItem('userId', res.user._id);
-            localStorage.setItem('userName', res.user.fullName);
+            localStorage.setItem('userName', buyerName);
             localStorage.setItem('userRole', 'buyer');
             localStorage.setItem('userEmail', res.user.email);
             localStorage.setItem('userVillage', res.user.village || '');
@@ -162,6 +171,10 @@ function buyerLogin() {
             document.getElementById('dashboardSection').classList.remove('hidden');
             document.getElementById('buyerDashboard').classList.remove('hidden');
             closeBuyerAuth();
+            const buyerFrame = document.getElementById('buyerFrame');
+            if (buyerFrame && buyerFrame.contentWindow) {
+                buyerFrame.contentWindow.location.reload();
+            }
         }
     })
     .catch(err => alert('Error: ' + err));
