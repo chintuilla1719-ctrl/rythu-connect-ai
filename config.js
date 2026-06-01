@@ -3,11 +3,18 @@
 // Works with browser globals and mobile browsers
 
 const API_BASE_URL = (() => {
+    const isMobile = /Mobile|Android|iPhone|iPad|iPod|Opera Mini/.test(navigator.userAgent || '');
+    
     if (typeof window !== 'undefined' && window.location) {
         const origin = window.location.origin;
         const hostname = window.location.hostname;
         const protocol = window.location.protocol || 'https:';
         const port = window.location.port;
+
+        console.log('[CONFIG] Mobile detected:', isMobile);
+        console.log('[CONFIG] Origin:', origin);
+        console.log('[CONFIG] Hostname:', hostname);
+        console.log('[CONFIG] Protocol:', protocol);
 
         if (hostname === 'localhost' || hostname === '127.0.0.1') {
             const url = 'http://localhost:5000/api';
@@ -47,9 +54,10 @@ if (typeof window !== 'undefined') {
     window.apiConfig.API_BASE_URL = API_BASE_URL;
 }
 
-console.log('[CONFIG] API_BASE_URL:', API_BASE_URL);
+console.log('[CONFIG] Final API_BASE_URL:', API_BASE_URL);
 console.log('[CONFIG] Hostname:', typeof window !== 'undefined' ? window.location.hostname : 'N/A');
 console.log('[CONFIG] Protocol:', typeof window !== 'undefined' ? window.location.protocol : 'N/A');
+console.log('[CONFIG] User Agent:', navigator.userAgent);
 
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = { API_BASE_URL };

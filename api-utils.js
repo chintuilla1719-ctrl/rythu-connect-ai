@@ -20,6 +20,9 @@ if (typeof fetch === 'undefined') {
  * @param {number} retries - number of retry attempts (default: 2) */
 async function apiFetch(url, options = {}, timeout = 30000, retries = 2) {
     let lastError;
+    const isMobile = /Mobile|Android|iPhone|iPad|iPod|Opera Mini/.test(navigator.userAgent);
+    
+    console.log(`[apiFetch] URL: ${url}, Mobile: ${isMobile}, Online: ${navigator.onLine}`);
 
     for (let attempt = 1; attempt <= retries; attempt++) {
         try {
@@ -37,7 +40,12 @@ async function apiFetch(url, options = {}, timeout = 30000, retries = 2) {
             if (typeof AbortController !== 'undefined') {
                 const controller = new AbortController();
                 signal = controller.signal;
-                timeoutId = setTimeout(() => controller.abort(), timeout);
+                timeoutId = setTimeout(() => {
+                    console.warn(`[apiFetch] Aborting request after ${timeout}ms timeout`);
+                    controller.abort();
+                }, timeout);
+            } else {
+                console.warn('[apiFetch] AbortController not supported - using no-timeout mode');
             }
 
             // Perform fetch
@@ -46,9 +54,12 @@ async function apiFetch(url, options = {}, timeout = 30000, retries = 2) {
                 ...(signal && { signal })
             };
             
+            console.log(`[apiFetch] Attempt ${attempt}/${retries} - Sending ${fetchOptions.method || 'GET'} to ${url}`);
             const response = await fetch(url, fetchOptions);
 
             if (timeoutId) clearTimeout(timeoutId);
+
+            console.log(`[apiFetch] Response status: ${response.status}`);
 
             // Check if response is ok (status 200-299)
             if (!response.ok) {
@@ -59,30 +70,35 @@ async function apiFetch(url, options = {}, timeout = 30000, retries = 2) {
                 );
             }
 
+            console.log(`[apiFetch] Success on attempt ${attempt}`);
             return response;
 
         } catch (error) {
             lastError = error;
-            console.warn(`[Fetch Attempt ${attempt}/${retries}] ${url} - ${error.message}`);
+            console.error(`[apiFetch] Attempt ${attempt}/${retries} failed:`, error.name, error.message);
 
             // Don't retry on certain errors
             if (error.name === 'AbortError') {
-                console.error(`Request timeout after ${timeout}ms`);
+                console.error(`[apiFetch] Request timeout after ${timeout}ms`);
+                if (!isMobile) {
+                    // Increase timeout for mobile networks
+                    timeout = Math.min(timeout + 10000, 60000);
+                }
             }
 
             // Wait before retry (exponential backoff: 1s, 2s, 4s)
             if (attempt < retries) {
                 const waitTime = Math.pow(2, attempt - 1) * 1000;
-                console.log(`Retrying in ${waitTime}ms...`);
+                console.log(`[apiFetch] Retrying in ${waitTime}ms...`);
                 await new Promise(resolve => setTimeout(resolve, waitTime));
             }
         }
     }
 
     // All retries exhausted
-    throw new Error(
-        lastError?.message || 'Network request failed after multiple attempts'
-    );
+    const errorMsg = `Network request failed after ${retries} attempts: ${lastError?.message}`;
+    console.error(`[apiFetch] ${errorMsg}`);
+    throw new Error(errorMsg);
 }
 
 /**
