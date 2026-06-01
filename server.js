@@ -124,6 +124,15 @@ const Order = mongoose.model("Order", orderSchema);
 
 // ============ ROUTES ============
 
+// HEALTH CHECK - Simple endpoint to verify API is alive
+app.get("/api/health", (req, res) => {
+    res.json({ 
+        status: "ok", 
+        timestamp: new Date().toISOString(),
+        message: "Rythu Connect API is running"
+    });
+});
+
 // AUTH ROUTES
 app.post("/api/auth/register", async (req, res) => {
     try {
