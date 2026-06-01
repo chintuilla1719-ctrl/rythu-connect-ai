@@ -296,8 +296,9 @@
         </div>
     </div>
 
-    <script src="../config.js"></script>
-    <script src="../script.js"></script>
+    <script src="config.js"></script>
+    <script src="api-utils.js"></script>
+    <script src="script.js"></script>
     <script>
         let currentFarmerId = localStorage.getItem('userId');
         let currentFarmerName = localStorage.getItem('userName');
@@ -356,11 +357,9 @@
             const method = currentEditCropId ? 'PUT' : 'POST';
             const url = currentEditCropId ? `${API_BASE_URL}/crops/${currentEditCropId}` : `${API_BASE_URL}/crops`;
 
-            fetch(url, {
-                method,
-                body: formData
-            })
-            .then(r => r.json())
+            // Use FormData for file uploads
+            const apiFunction = method === 'PUT' ? apiPutFormData : apiPostFormData;
+            apiFunction(url, formData)
             .then(data => {
                 if (data.error) throw new Error(data.error);
                 showMessage(currentEditCropId ? 'Crop updated successfully!' : 'Crop added successfully!', 'success');
@@ -368,12 +367,11 @@
                 loadFarmerCrops();
                 switchFarmerTab('crops');
             })
-            .catch(err => showMessage('Error saving crop: ' + err.message, 'error'));
+            .catch(err => showMessage('Error saving crop: ' + getErrorMessage(err), 'error'));
         }
 
        function loadFarmerCrops() {
-    fetch(`${API_BASE_URL}/crops?farmerId=${currentFarmerId}`)
-        .then(response => response.json())
+    apiGet(`${API_BASE_URL}/crops?farmerId=${encodeURIComponent(currentFarmerId)}`)
         .then(crops => {
             const grid = document.getElementById('cropsGrid');
 
@@ -433,11 +431,11 @@
         })
         .catch(error => {
             console.error(error);
+            showMessage('Failed to load crops: ' + getErrorMessage(error), 'error');
         });
 }
         function loadFarmerOrders() {
-            fetch(`${API_BASE_URL}/orders?farmerId=${currentFarmerId}`)
-                .then(r => r.json())
+            apiGet(`${API_BASE_URL}/orders?farmerId=${encodeURIComponent(currentFarmerId)}`)
                 .then(orders => {
                     const table = document.getElementById('ordersTable');
                     table.innerHTML = orders.map(order => `
@@ -461,8 +459,7 @@
         }
 
         function loadFarmerProfile() {
-            fetch(`${API_BASE_URL}/users/${currentFarmerId}`)
-                .then(r => r.json())
+            apiGet(`${API_BASE_URL}/users/${encodeURIComponent(currentFarmerId)}`)
                 .then(user => {
                     document.getElementById('profileName').value = user.fullName;
                     document.getElementById('profileEmail').value = user.email;
@@ -473,8 +470,7 @@
         }
 
         function editCrop(cropId) {
-            fetch(`${API_BASE_URL}/crops/${cropId}`)
-                .then(r => r.json())
+            apiGet(`${API_BASE_URL}/crops/${encodeURIComponent(cropId)}`)
                 .then(crop => {
                     currentEditCropId = cropId;
                     document.getElementById('cropFormButton').textContent = 'Update Crop';
@@ -489,31 +485,27 @@
                     document.getElementById('certifications').value = (crop.certifications || []).join(', ');
                     document.getElementById('cropImage').value = '';
                 })
-                .catch(err => showMessage('Could not load crop for editing', 'error'));
+                .catch(err => showMessage('Could not load crop for editing: ' + getErrorMessage(err), 'error'));
         }
 
         function deleteCrop(cropId) {
             if (confirm('Are you sure?')) {
-                fetch(`${API_BASE_URL}/crops/${cropId}`, { method: 'DELETE' })
-                    .then(r => r.json())
+                apiDelete(`${API_BASE_URL}/crops/${encodeURIComponent(cropId)}`)
                     .then(data => {
                         showMessage('Crop deleted!', 'success');
                         loadFarmerCrops();
-                    });
+                    })
+                    .catch(err => showMessage('Error deleting crop: ' + getErrorMessage(err), 'error'));
             }
         }
 
         function updateOrderStatus(orderId, status) {
-            fetch(`${API_BASE_URL}/orders/${orderId}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ status })
-            })
-            .then(r => r.json())
+            apiPut(`${API_BASE_URL}/orders/${encodeURIComponent(orderId)}`, { status })
             .then(data => {
                 showMessage('Order status updated!', 'success');
                 loadFarmerOrders();
-            });
+            })
+            .catch(err => showMessage('Error updating order: ' + getErrorMessage(err), 'error'));
         }
 
         function showMessage(msg, type) {

@@ -1,6 +1,55 @@
 // API Configuration - automatically detects localhost vs production
 // Imported from config.js which handles dynamic URL resolution
+// Uses api-utils.js for enhanced fetch with timeout/retry
 const API_URL = API_BASE_URL;
+
+console.log('[SCRIPT.JS] Loaded. API_URL:', API_URL);
+console.log('[SCRIPT.JS] API_BASE_URL:', typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'UNDEFINED');
+console.log('[SCRIPT.JS] apiFetch defined:', typeof apiFetch !== 'undefined');
+
+// ============ GLOBAL MESSAGE & UTILITY FUNCTIONS ============
+
+/**
+ * Show message to user with type indicator
+ * Works in any context (main page or iframe)
+ */
+function showMessage(msg, type = 'info') {
+    console.log(`[MESSAGE] [${type.toUpperCase()}] ${msg}`);
+    
+    // Try multiple methods to show message
+    try {
+        // Method 1: Try to find message element in current document
+        const messageElement = document.getElementById('message') || 
+                               document.querySelector('.message');
+        
+        if (messageElement) {
+            messageElement.textContent = msg;
+            messageElement.className = 'message ' + type;
+            setTimeout(() => messageElement.className = 'message', 5000);
+            return;
+        }
+
+        // Method 2: Try in parent window (for iframes)
+        if (window.parent && window.parent !== window) {
+            const parentMsg = window.parent.document.getElementById('message');
+            if (parentMsg) {
+                parentMsg.textContent = msg;
+                parentMsg.className = 'message ' + type;
+                setTimeout(() => parentMsg.className = 'message', 5000);
+                return;
+            }
+        }
+    } catch (e) {
+        console.log('[MESSAGE] Could not update DOM:', e.message);
+    }
+
+    // Fallback: Show as alert for critical errors
+    if (type === 'error') {
+        alert('❌ Error: ' + msg);
+    } else if (type === 'success') {
+        alert('✅ ' + msg);
+    }
+}
 
 // ============ GLOBAL AUTH FUNCTIONS ============
 
@@ -57,59 +106,56 @@ function farmerRegister() {
         return;
     }
 
-    fetch(`${API_URL}/auth/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-    })
-    .then(r => r.json())
+    apiPost(`${API_URL}/auth/register`, data)
     .then(res => {
         if (res.error) {
-            alert('Registration failed: ' + res.error);
+            showMessage('Registration failed: ' + res.error, 'error');
         } else {
-            alert('Registration successful! Please login.');
+            showMessage('Registration successful! Please login.', 'success');
             switchTab('farmer', 'login');
             document.getElementById('farmerRegisterTab').querySelectorAll('input').forEach(el => el.value = '');
         }
     })
-    .catch(err => alert('Error: ' + err));
+    .catch(err => showMessage(getErrorMessage(err), 'error'));
 }
 
 function farmerLogin() {
     const email = document.getElementById('farmerLoginEmail').value;
     const password = document.getElementById('farmerLoginPassword').value;
 
-   fetch(`${API_URL}/auth/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password })
-})
-.then(r => r.json())
+    console.log('[FARMER LOGIN] Starting with email:', email);
+    console.log('[FARMER LOGIN] API_URL:', API_URL);
+    console.log('[FARMER LOGIN] Network online:', typeof isOnline !== 'undefined' ? isOnline() : 'N/A');
+
+   apiPost(`${API_URL}/auth/login`, { email, password })
 .then(res => {
-
-    console.log("LOGIN RESPONSE:", res);
-
+    console.log("[FARMER LOGIN] Response received:", res);
     if (res.error) {
-            alert('Login failed: ' + res.error);
-        } else {
-            console.log("User data:", res.user);
-            localStorage.setItem('userId', res.user._id);
-            localStorage.setItem('userName', res.user.fullName);
-            localStorage.setItem('userRole', 'farmer');
-            localStorage.setItem('userEmail', res.user.email);
-            localStorage.setItem('userVillage', res.user.village || '');
-            localStorage.setItem('userState', res.user.state || '');
-            document.getElementById('authSection').classList.add('hidden');
-            document.getElementById('dashboardSection').classList.remove('hidden');
-            document.getElementById('farmerDashboard').classList.remove('hidden');
-            closeFarmerAuth();
-            const farmerFrame = document.getElementById('farmerFrame');
-            if (farmerFrame && farmerFrame.contentWindow) {
-                farmerFrame.contentWindow.location.reload();
-            }
+        showMessage('Login failed: ' + res.error, 'error');
+    } else {
+        console.log("[FARMER LOGIN] User data:", res.user);
+        localStorage.setItem('userId', res.user._id);
+        localStorage.setItem('userName', res.user.fullName);
+        localStorage.setItem('userRole', 'farmer');
+        localStorage.setItem('userEmail', res.user.email);
+        localStorage.setItem('userVillage', res.user.village || '');
+        localStorage.setItem('userState', res.user.state || '');
+        document.getElementById('authSection').classList.add('hidden');
+        document.getElementById('dashboardSection').classList.remove('hidden');
+        document.getElementById('farmerDashboard').classList.remove('hidden');
+        closeFarmerAuth();
+        const farmerFrame = document.getElementById('farmerFrame');
+        if (farmerFrame && farmerFrame.contentWindow) {
+            farmerFrame.contentWindow.location.reload();
         }
-    })
-    .catch(err => alert('Error: ' + err));
+    }
+})
+.catch(err => {
+    console.error('[FARMER LOGIN] Error caught:', err);
+    console.error('[FARMER LOGIN] Error message:', err.message);
+    console.error('[FARMER LOGIN] Error stack:', err.stack);
+    showMessage(getErrorMessage(err), 'error');
+});
 }
 
 // ============ BUYER AUTH ============
@@ -130,37 +176,31 @@ function buyerRegister() {
         return;
     }
 
-    fetch(`${API_URL}/auth/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-    })
-    .then(r => r.json())
+    apiPost(`${API_URL}/auth/register`, data)
     .then(res => {
         if (res.error) {
-            alert('Registration failed: ' + res.error);
+            showMessage('Registration failed: ' + res.error, 'error');
         } else {
-            alert('Registration successful! Please login.');
+            showMessage('Registration successful! Please login.', 'success');
             switchTab('buyer', 'login');
             document.getElementById('buyerRegisterTab').querySelectorAll('input').forEach(el => el.value = '');
         }
     })
-    .catch(err => alert('Error: ' + err));
+    .catch(err => showMessage(getErrorMessage(err), 'error'));
 }
 
 function buyerLogin() {
     const email = document.getElementById('buyerLoginEmail').value;
     const password = document.getElementById('buyerLoginPassword').value;
 
-    fetch(`${API_URL}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-    })
-    .then(r => r.json())
+    console.log('[BUYER LOGIN] Starting with email:', email);
+    console.log('[BUYER LOGIN] API_URL:', API_URL);
+
+    apiPost(`${API_URL}/auth/login`, { email, password })
     .then(res => {
+        console.log('[BUYER LOGIN] Response received:', res);
         if (res.error) {
-            alert('Login failed: ' + res.error);
+            showMessage('Login failed: ' + res.error, 'error');
         } else {
             const buyerName = res.user.fullName || res.user.email || 'Buyer';
             localStorage.setItem('userId', res.user._id);
@@ -179,7 +219,11 @@ function buyerLogin() {
             }
         }
     })
-    .catch(err => alert('Error: ' + err));
+    .catch(err => {
+        console.error('[BUYER LOGIN] Error caught:', err);
+        console.error('[BUYER LOGIN] Error message:', err.message);
+        showMessage(getErrorMessage(err), 'error');
+    });
 }
 
 // ============ LOGOUT ============

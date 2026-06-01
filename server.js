@@ -25,8 +25,23 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-app.use(cors());
-app.use(express.json());
+// Configure CORS for mobile compatibility
+// Mobile browsers require proper CORS headers for preflight requests
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, HEAD');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    res.header('Access-Control-Max-Age', '86400');
+    
+    // Handle preflight requests
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(200);
+    }
+    next();
+});
+
+app.use(express.json({ limit: '50mb' })); // Increase JSON limit for image uploads
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.static(staticRoot));
 app.get("/", (req, res) => {
     res.sendFile(path.join(staticRoot, "index.html"));
