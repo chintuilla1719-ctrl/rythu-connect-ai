@@ -1,10 +1,14 @@
 // API Configuration - automatically detects localhost vs production
 // Imported from config.js which handles dynamic URL resolution
 // Uses api-utils.js for enhanced fetch with timeout/retry
-const API_URL = API_BASE_URL;
+const API_URL =
+    (typeof window !== 'undefined' && window.API_BASE_URL) ||
+    (typeof API_BASE_URL !== 'undefined' && API_BASE_URL) ||
+    'https://rythu-connect-ai.onrender.com/api';
 
 console.log('[SCRIPT.JS] Loaded. API_URL:', API_URL);
 console.log('[SCRIPT.JS] API_BASE_URL:', typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'UNDEFINED');
+console.log('[SCRIPT.JS] window.API_BASE_URL:', typeof window !== 'undefined' ? window.API_BASE_URL : 'UNDEFINED');
 console.log('[SCRIPT.JS] apiFetch defined:', typeof apiFetch !== 'undefined');
 
 // ============ GLOBAL MESSAGE & UTILITY FUNCTIONS ============

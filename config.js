@@ -1,45 +1,50 @@
 // Dynamic API Base URL Configuration
 // Automatically detects localhost vs production/Render deployment
-// Handles HTTPS redirects and mobile networks
+// Works with browser globals and mobile browsers
 
 const API_BASE_URL = (() => {
     if (typeof window !== 'undefined' && window.location) {
-        // Client-side (browser environment)
+        const origin = window.location.origin;
         const hostname = window.location.hostname;
-        let protocol = window.location.protocol;
+        const protocol = window.location.protocol || 'https:';
         const port = window.location.port;
 
-        // Local development
         if (hostname === 'localhost' || hostname === '127.0.0.1') {
-            const url = 'http://localhost:5000/api';
+            const url = 'https://rythu-connect-ai.onrender.com/api';
             console.log('[CONFIG] Localhost detected, API:', url);
             return url;
         }
 
-        // Production/Render: Force HTTPS if not localhost
-        if (protocol === 'http:' && hostname !== 'localhost' && hostname !== '127.0.0.1') {
-            protocol = 'https:';
+        if (origin && origin !== 'null') {
+            const url = `${origin}/api`;
+            console.log('[CONFIG] Using location.origin, API:', url);
+            return url;
         }
 
-        // Production or Render deployment
-        const baseUrl = port 
-            ? `${protocol}//${hostname}:${port}` 
+        const baseUrl = port
+            ? `${protocol}//${hostname}:${port}`
             : `${protocol}//${hostname}`;
         const url = `${baseUrl}/api`;
-        console.log('[CONFIG] Production detected, API:', url);
+        console.log('[CONFIG] Fallback production API:', url);
         return url;
     }
 
-    // Server-side fallback (Node.js)
-    console.log('[CONFIG] Server-side, using localhost fallback');
-    return 'http://localhost:5000/api';
+    console.log('[CONFIG] Server-side fallback, using deployed API');
+    return 'https://rythu-connect-ai.onrender.com/api';
 })();
 
-// Log detection info
+// Expose globally for all browsers and inline scripts
+if (typeof window !== 'undefined') {
+    window.API_BASE_URL = API_BASE_URL;
+    window.API_URL = API_BASE_URL;
+    window.apiConfig = window.apiConfig || {};
+    window.apiConfig.API_BASE_URL = API_BASE_URL;
+}
+
+console.log('[CONFIG] API_BASE_URL:', API_BASE_URL);
 console.log('[CONFIG] Hostname:', typeof window !== 'undefined' ? window.location.hostname : 'N/A');
 console.log('[CONFIG] Protocol:', typeof window !== 'undefined' ? window.location.protocol : 'N/A');
 
-// Export for use in modules (if needed)
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = { API_BASE_URL };
 }
