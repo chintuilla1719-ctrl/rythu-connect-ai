@@ -1,4 +1,6 @@
-const API_URL = 'http://localhost:5000/api';
+// API Configuration - automatically detects localhost vs production
+// Imported from config.js which handles dynamic URL resolution
+const API_URL = API_BASE_URL;
 
 // ============ GLOBAL AUTH FUNCTIONS ============
 

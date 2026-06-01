@@ -390,6 +390,7 @@
         </div>
     </div>
 
+    <script src="config.js"></script>
     <script src="script.js"></script>
     <script>
         let currentBuyerId = localStorage.getItem('userId');
@@ -418,7 +419,7 @@
         }
 
         function loadAllCrops() {
-            fetch('http://localhost:5000/api/crops')
+            fetch(`${API_BASE_URL}/crops`)
                 .then(r => r.json())
                 .then(crops => displayCrops(crops));
         }
@@ -450,7 +451,7 @@
             const minPrice = document.getElementById('minPrice').value;
             const maxPrice = document.getElementById('maxPrice').value;
 
-            let url = 'http://localhost:5000/api/crops?';
+            let url = `${API_BASE_URL}/crops?`;
             if (search) url += `search=${search}&`;
             if (state) url += `state=${state}&`;
             if (minPrice) url += `minPrice=${minPrice}&`;
@@ -496,7 +497,7 @@
                 expectedDelivery: document.getElementById('expectedDelivery').value
             };
 
-            fetch('http://localhost:5000/api/orders', {
+            fetch(`${API_BASE_URL}/orders`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(orderData)
@@ -511,7 +512,7 @@
         }
 
         function loadBuyerOrders() {
-            fetch(`http://localhost:5000/api/orders?buyerId=${currentBuyerId}`)
+            fetch(`${API_BASE_URL}/orders?buyerId=${currentBuyerId}`)
                 .then(r => r.json())
                 .then(orders => {
                     const tbody = document.getElementById('ordersBody');
@@ -531,7 +532,7 @@
         }
 
         function loadBuyerProfile() {
-            fetch(`http://localhost:5000/api/users/${currentBuyerId}`)
+            fetch(`${API_BASE_URL}/users/${currentBuyerId}`)
                 .then(r => r.json())
                 .then(user => {
                     document.getElementById('profileName').value = user.fullName;

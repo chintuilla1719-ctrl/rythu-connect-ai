@@ -5,6 +5,7 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 require("dotenv").config();
+const dns = require('dns').promises;
 
 const app = express();
 
@@ -35,12 +36,16 @@ app.get("/index.html", (req, res) => {
 });
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/rythu-connect", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => console.log("MongoDB connected"))
-.catch(err => console.log("MongoDB connection error:", err));
-
+// MongoDB Connection with SRV fallback for environments where Node cannot resolve SRV
+mongoose.connect(
+    process.env.MONGODB_URI
+)
+.then(() => {
+    console.log("MongoDB connected");
+})
+.catch((err) => {
+    console.error("MongoDB connection error:", err);
+});
 // ============ SCHEMAS ============
 
 // User Schema (Farmer & Buyer)
@@ -299,6 +304,7 @@ app.get("/api/users/:id", async (req, res) => {
     }
 });
 
-app.listen(5000, () => {
-    console.log("Server running on http://localhost:5000");
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
 });
