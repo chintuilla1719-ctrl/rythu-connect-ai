@@ -10,8 +10,14 @@ const API_BASE_URL = (() => {
         const port = window.location.port;
 
         if (hostname === 'localhost' || hostname === '127.0.0.1') {
+            const url = 'http://localhost:5000/api';
+            console.log('[CONFIG] Localhost detected, using local API:', url);
+            return url;
+        }
+
+        if (hostname.includes('rythu-connect-ai.onrender.com') || origin.includes('rythu-connect-ai.onrender.com')) {
             const url = 'https://rythu-connect-ai.onrender.com/api';
-            console.log('[CONFIG] Localhost detected, API:', url);
+            console.log('[CONFIG] Render deployment detected, using deployed API:', url);
             return url;
         }
 

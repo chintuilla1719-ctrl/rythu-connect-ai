@@ -4,7 +4,10 @@
 const API_URL =
     (typeof window !== 'undefined' && window.API_BASE_URL) ||
     (typeof API_BASE_URL !== 'undefined' && API_BASE_URL) ||
-    'https://rythu-connect-ai.onrender.com/api';
+    (typeof window !== 'undefined' && window.location &&
+        ['localhost', '127.0.0.1'].includes(window.location.hostname)
+        ? 'http://localhost:5000/api'
+        : 'https://rythu-connect-ai.onrender.com/api');
 
 console.log('[SCRIPT.JS] Loaded. API_URL:', API_URL);
 console.log('[SCRIPT.JS] API_BASE_URL:', typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'UNDEFINED');
