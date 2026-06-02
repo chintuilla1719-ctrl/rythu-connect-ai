@@ -541,6 +541,32 @@
                     document.getElementById('profileState').value = user.state;
                 });
         }
+     function saveBuyerProfile() {
+            const data = {
+                fullName: document.getElementById('profileName').value,
+                phone: document.getElementById('profilePhone').value,
+                village: document.getElementById('profileVillage').value,
+                state: document.getElementById('profileState').value
+            };
+
+            fetch(`http://localhost:5000/api/users/${currentBuyerId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(r => r.json())
+            .then(res => {
+                if (res.error) {
+                    showMessage('Unable to save profile: ' + res.error, 'error');
+                } else {
+                    showMessage('Profile updated successfully!', 'success');
+                    localStorage.setItem('userName', data.fullName);
+                    document.getElementById('buyerNameDisplay').textContent = `Welcome, ${data.fullName}!`;
+                }
+            })
+            .catch(() => showMessage('Unable to save profile', 'error'));
+        }
+   
 
         function showMessage(msg, type) {
             const msgDiv = document.getElementById('message');
