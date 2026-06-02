@@ -66,6 +66,12 @@ Contributors can:
 
 Install the following software:
 
+* Node.js (14+)
+* npm
+* MongoDB
+* Git
+* Visual Studio Code or another editor
+
 ### Frontend
 
 * HTML5
@@ -95,7 +101,8 @@ Install the following software:
 Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone git clone https://code.swecha.org/Prashanth15/rythu-connect-ai.git
+```<repository-url>
 ```
 
 Navigate to project folder:
