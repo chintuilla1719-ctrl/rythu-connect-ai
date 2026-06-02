@@ -97,7 +97,6 @@ function farmerLogin() {
             localStorage.setItem('userEmail', res.user.email);
             localStorage.setItem('userVillage', res.user.village || '');
             localStorage.setItem('userState', res.user.state || '');
-            localStorage.setItem('authToken', res.token || '');
             document.getElementById('authSection').classList.add('hidden');
             document.getElementById('dashboardSection').classList.remove('hidden');
             document.getElementById('farmerDashboard').classList.remove('hidden');
@@ -168,7 +167,6 @@ function buyerLogin() {
             localStorage.setItem('userEmail', res.user.email);
             localStorage.setItem('userVillage', res.user.village || '');
             localStorage.setItem('userState', res.user.state || '');
-            localStorage.setItem('authToken', res.token || '');
             document.getElementById('authSection').classList.add('hidden');
             document.getElementById('dashboardSection').classList.remove('hidden');
             document.getElementById('buyerDashboard').classList.remove('hidden');

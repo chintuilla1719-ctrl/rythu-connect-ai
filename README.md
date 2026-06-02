@@ -49,7 +49,6 @@ Rythu Connect AI is an AI-powered agriculture platform designed to help farmers 
 ### Backend
 - Node.js
 - Express.js
-- bcryptjs
  -bcryptjs
 - jsonwebtoken
 
@@ -66,15 +65,6 @@ Rythu Connect AI is an AI-powered agriculture platform designed to help farmers 
 ---
 
 ## 📂 Project Structure
-
-- `index.html` — landing page and auth shell
-- `farmer.html` — farmer dashboard and crop management
-- `buyer.html` — buyer marketplace and order flow
-- `script.js` — shared auth and navigation logic
-- `server.js` — API server and database routes
-- `style.css` — global app styles
-- `.env.example` — example environment variables
-
 Rythu-Connect-AI/
 │
 ├── index.html
@@ -99,39 +89,11 @@ Rythu-Connect-AI/
 
 ---
 
-## � Quick Start
-
-1. Install dependencies:
-
-```bash
-npm install
-```
-
-2. Copy `.env.example` to `.env` and customize values:
-
-```bash
-copy .env.example .env
-```
-
-3. Start the server:
-
-```bash
-npm start
-```
-
-4. Open the application at:
-
-```text
-http://localhost:5000
-```
-
----
-
 ## 👨‍💻 Developed By
 
 **Kondakalla Prashanth**
 
-B.Sc. Data Analytics
+B.Sc Data Analytics
 
 Hyderabad, Telangana
 
@@ -143,14 +105,14 @@ Mobile: 9030430921
 
 ## 🌟 Future Enhancements
 
-- Voice assistant in Telugu
-- Government scheme recommendations
-- Weather API integration
-- Crop disease detection model
-- Mobile responsive interface
+- Voice Assistant in Telugu
+- Government Scheme Recommendations
+- IoT Sensor Integration
+- Advanced Yield Prediction
+- Mobile Application
 
 ---
 
 ## 📜 License
 
-ISC
+This project is developed for educational and social impact purposes to support farmers through AI and digital technologies.
