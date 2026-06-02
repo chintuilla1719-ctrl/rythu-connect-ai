@@ -66,27 +66,11 @@ Contributors can:
 
 Install the following software:
 
-### Frontend
-
-* HTML5
-* CSS3
-* JavaScript
-
-### Backend
-
-* Python 3.x
-
-### Database
-
-* MySQL / SQLite
-
-### Version Control
-
+* Node.js (14+)
+* npm
+* MongoDB
 * Git
-
-### IDE
-
-* Visual Studio Code
+* Visual Studio Code or another editor
 
 ---
 
@@ -95,13 +79,25 @@ Install the following software:
 Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone https://code.swecha.org/Prashanth15/rythu-connect-ai.git
 ```
 
-Navigate to project folder:
+Navigate to the project folder:
 
 ```bash
 cd rythu-connect-ai
+```
+
+Install the dependencies:
+
+```bash
+npm install
+```
+
+Create a `.env` file from the example and update values:
+
+```bash
+copy .env.example .env
 ```
 
 Open the project:

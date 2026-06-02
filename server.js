@@ -4,9 +4,12 @@ const mongoose = require("mongoose");
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 const app = express();
+const JWT_SECRET = process.env.JWT_SECRET || "rythu-connect-secret";
 
 const staticRoot = path.resolve(__dirname);
 const uploadDir = path.join(staticRoot, "uploads");
@@ -100,10 +103,15 @@ app.post("/api/auth/register", async (req, res) => {
     try {
         const { fullName, email, password, phone, role, village, state } = req.body;
         
+        if (!fullName || !email || !password || !role) {
+            return res.status(400).json({ error: "Missing required fields" });
+        }
+
         const userExists = await User.findOne({ email });
         if (userExists) return res.status(400).json({ error: "Email already exists" });
         
-        const user = new User({ fullName, email, password, phone, role, village, state });
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = new User({ fullName, email, password: hashedPassword, phone, role, village, state });
         await user.save();
         
         res.json({ message: "User registered successfully", user: { _id: user._id, email: user.email, role: user.role, fullName: user.fullName, village: user.village, state: user.state } });
@@ -116,20 +124,22 @@ app.post("/api/auth/login", async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        console.log("Email entered:", email);
+        if (!email || !password) {
+            return res.status(400).json({ error: "Email and password are required" });
+        }
 
         const user = await User.findOne({ email });
+        const isMatch = user ? await bcrypt.compare(password, user.password) : false;
 
-        console.log("User found:", user);
-
-        if (!user || user.password !== password) {
-            return res.status(400).json({
-                error: "Invalid credentials"
-            });
+        if (!user || !isMatch) {
+            return res.status(400).json({ error: "Invalid credentials" });
         }
+
+        const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, { expiresIn: "7d" });
 
         res.json({
             message: "Login successful",
+            token,
             user: {
                 _id: user._id,
                 email: user.email,
@@ -189,7 +199,7 @@ app.get("/api/crops", async (req, res) => {
         if (state) query.state = state;
         if (farmerId) query.farmerId = farmerId;
         
-        const crops = await Crop.find(query);
+        const crops = await Crop.find(query).sort({ createdAt: -1 });
         res.json(crops);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -248,8 +258,36 @@ app.delete("/api/crops/:id", async (req, res) => {
 // ORDER ROUTES
 app.post("/api/orders", async (req, res) => {
     try {
+        const { buyerId, cropId, cropName, farmerId, farmerName, quantity, totalPrice, deliveryAddress, expectedDelivery } = req.body;
+
+        const crop = await Crop.findById(cropId);
+        if (!crop) {
+            return res.status(404).json({ error: "Crop not found" });
+        }
+
+        const orderQuantity = Number(quantity);
+        if (!orderQuantity || orderQuantity <= 0 || orderQuantity > crop.quantity) {
+            return res.status(400).json({ error: "Invalid order quantity" });
+        }
+
+        crop.quantity = crop.quantity - orderQuantity;
+        await crop.save();
+
         const orderId = "ORD-" + Date.now();
-        const order = new Order({ orderId, ...req.body });
+        const order = new Order({
+            orderId,
+            buyerId,
+            cropId,
+            cropName,
+            farmerId,
+            farmerName,
+            quantity: orderQuantity,
+            totalPrice,
+            deliveryAddress,
+            expectedDelivery,
+            status: "pending"
+        });
+
         await order.save();
         res.json({ message: "Order placed successfully", order });
     } catch (error) {
@@ -299,6 +337,26 @@ app.get("/api/users/:id", async (req, res) => {
     }
 });
 
-app.listen(5000, () => {
-    console.log("Server running on http://localhost:5000");
+app.put("/api/users/:id", async (req, res) => {
+    try {
+        const { fullName, phone, village, state } = req.body;
+        const user = await User.findByIdAndUpdate(
+            req.params.id,
+            { fullName, phone, village, state },
+            { new: true }
+        );
+
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        res.json({ message: "Profile updated successfully", user });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
 });
