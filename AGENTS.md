@@ -16,6 +16,7 @@ User Input → Agent Processing → Analysis → Response Generation → User Ou
 
 ## 1. Crop Recommendation Agent
 
+
 ### Purpose
 
 Recommend suitable crops based on environmental and soil conditions.
