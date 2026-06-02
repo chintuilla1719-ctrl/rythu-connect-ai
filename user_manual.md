@@ -32,7 +32,7 @@ The purpose of Rythu Connect AI is to:
 
 * Windows/Linux/macOS
 * Google Chrome, Microsoft Edge, or Mozilla Firefox
-* Python 3.x (for local deployment)
+* Node.js and npm
 
 ---
 
@@ -87,13 +87,13 @@ cd rythu-connect-ai
 ### Step 3: Install Dependencies
 
 ```bash
-pip install -r requirements.txt
+npm install
 ```
 
 ### Step 4: Run the Application
 
 ```bash
-python app.py
+npm start
 ```
 
 ### Step 5: Open Browser

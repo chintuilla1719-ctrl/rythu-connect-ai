@@ -72,28 +72,6 @@ Install the following software:
 * Git
 * Visual Studio Code or another editor
 
-### Frontend
-
-* HTML5
-* CSS3
-* JavaScript
-
-### Backend
-
-* Python 3.x
-
-### Database
-
-* MySQL / SQLite
-
-### Version Control
-
-* Git
-
-### IDE
-
-* Visual Studio Code
-
 ---
 
 # Repository Setup
@@ -101,14 +79,25 @@ Install the following software:
 Clone the repository:
 
 ```bash
-git clone git clone https://code.swecha.org/Prashanth15/rythu-connect-ai.git
-```<repository-url>
+git clone <repository-url>
 ```
 
-Navigate to project folder:
+Navigate to the project folder:
 
 ```bash
 cd rythu-connect-ai
+```
+
+Install the dependencies:
+
+```bash
+npm install
+```
+
+Create a `.env` file from the example and update values:
+
+```bash
+copy .env.example .env
 ```
 
 Open the project:

@@ -16,6 +16,7 @@ User Input → Agent Processing → Analysis → Response Generation → User Ou
 
 ## 1. Crop Recommendation Agent
 
+
 ### Purpose
 
 Recommend suitable crops based on environmental and soil conditions.
@@ -192,3 +193,5 @@ Uses AI-based natural language understanding.
 ## Conclusion
 
 The Rythu Connect AI platform uses specialized AI agents to provide intelligent agricultural assistance. These agents work together to support farmers with crop recommendations, disease detection, weather forecasting, market analysis, and farming guidance.
+
+

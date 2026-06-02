@@ -291,7 +291,11 @@
             <button class="tab-btn active" onclick="switchBuyerTab('marketplace', event)">Marketplace</button>
             <button class="tab-btn" onclick="switchBuyerTab('orders', event)">My Orders</button>
             <button class="tab-btn" onclick="switchBuyerTab('profile', event)">Profile</button>
+<<<<<<< HEAD
+        </div>
+=======
         </div> <div class="tabs">
+>>>>>>> 66d9265eb913a8a5633b58519ff12abcbe02c954
 
         <!-- Marketplace Tab -->
         <div id="marketplaceTab" class="tab-content active">
@@ -337,7 +341,7 @@
             <h2>My Profile</h2>
             <div class="form-group">
                 <label>Full Name</label>
-                <input type="text" id="profileName" disabled>
+                <input type="text" id="profileName">
             </div>
             <div class="form-group">
                 <label>Email</label>
@@ -345,16 +349,18 @@
             </div>
             <div class="form-group">
                 <label>Phone</label>
-                <input type="tel" id="profilePhone" disabled>
+                <input type="tel" id="profilePhone">
             </div>
             <div class="form-group">
                 <label>City/Village</label>
-                <input type="text" id="profileVillage" disabled>
+                <input type="text" id="profileVillage">
             </div>
             <div class="form-group">
                 <label>State</label>
-                <input type="text" id="profileState" disabled>
+                <input type="text" id="profileState">
             </div>
+
+            <button class="btn btn-primary" style="margin-top: 10px;" onclick="saveBuyerProfile()">Save Profile</button>
         </div>
     </div>
 
@@ -392,8 +398,21 @@
 
     <script src="script.js"></script>
     <script>
+        const API_URL = '/api';
         let currentBuyerId = localStorage.getItem('userId');
         let selectedCrop = null;
+
+        function authHeaders(json = true) {
+            const headers = {};
+            const token = localStorage.getItem('authToken');
+            if (token) {
+                headers.Authorization = `Bearer ${token}`;
+            }
+            if (json) {
+                headers['Content-Type'] = 'application/json';
+            }
+            return headers;
+        }
 
         function getBuyerDisplayName() {
             const stored = localStorage.getItem('userName');
@@ -410,15 +429,17 @@
             loadBuyerProfile();
         });
 
-        function switchBuyerTab(tabName) {
+        function switchBuyerTab(tabName, event) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(tabName + 'Tab').classList.add('active');
-            event.target.classList.add('active');
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
         }
 
         function loadAllCrops() {
-            fetch('http://localhost:5000/api/crops')
+            fetch(`${API_URL}/crops`)
                 .then(r => r.json())
                 .then(crops => displayCrops(crops));
         }
@@ -450,7 +471,7 @@
             const minPrice = document.getElementById('minPrice').value;
             const maxPrice = document.getElementById('maxPrice').value;
 
-            let url = 'http://localhost:5000/api/crops?';
+            let url = `${API_URL}/crops?`;
             if (search) url += `search=${search}&`;
             if (state) url += `state=${state}&`;
             if (minPrice) url += `minPrice=${minPrice}&`;
@@ -496,9 +517,9 @@
                 expectedDelivery: document.getElementById('expectedDelivery').value
             };
 
-            fetch('http://localhost:5000/api/orders', {
+            fetch(`${API_URL}/orders`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: authHeaders(),
                 body: JSON.stringify(orderData)
             })
             .then(r => r.json())
@@ -511,7 +532,7 @@
         }
 
         function loadBuyerOrders() {
-            fetch(`http://localhost:5000/api/orders?buyerId=${currentBuyerId}`)
+            fetch(`${API_URL}/orders`, { headers: authHeaders() })
                 .then(r => r.json())
                 .then(orders => {
                     const tbody = document.getElementById('ordersBody');
@@ -522,16 +543,16 @@
                             <td>${order.farmerName || 'N/A'}</td>
                             <td>${order.quantity}</td>
                             <td>₹${order.totalPrice}</td>
-                            <td><span class="status-badge status-${order.status}">${order.status}</span></td>
-                            <td>${new Date(order.orderDate).toLocaleDateString()}</td>
-                            <td>${new Date(order.expectedDelivery).toLocaleDateString()}</td>
+                            <td><span class="status-badge status-${order.status || 'pending'}">${order.status || 'pending'}</span></td>
+                            <td>${order.orderDate ? new Date(order.orderDate).toLocaleDateString() : 'N/A'}</td>
+                            <td>${order.expectedDelivery ? new Date(order.expectedDelivery).toLocaleDateString() : 'N/A'}</td>
                         </tr>
                     `).join('');
                 });
         }
 
         function loadBuyerProfile() {
-            fetch(`http://localhost:5000/api/users/${currentBuyerId}`)
+            fetch(`${API_URL}/users/${currentBuyerId}`, { headers: authHeaders() })
                 .then(r => r.json())
                 .then(user => {
                     document.getElementById('profileName').value = user.fullName;
@@ -567,6 +588,35 @@
             .catch(() => showMessage('Unable to save profile', 'error'));
         }
    
+<<<<<<< HEAD
+
+        function saveBuyerProfile() {
+            const data = {
+                fullName: document.getElementById('profileName').value,
+                phone: document.getElementById('profilePhone').value,
+                village: document.getElementById('profileVillage').value,
+                state: document.getElementById('profileState').value
+            };
+
+            fetch(`${API_URL}/users/${currentBuyerId}`, {
+                method: 'PUT',
+                headers: authHeaders(),
+                body: JSON.stringify(data)
+            })
+            .then(r => r.json())
+            .then(res => {
+                if (res.error) {
+                    showMessage('Unable to save profile: ' + res.error, 'error');
+                } else {
+                    showMessage('Profile updated successfully!', 'success');
+                    localStorage.setItem('userName', data.fullName);
+                    document.getElementById('buyerNameDisplay').textContent = `Welcome, ${data.fullName}!`;
+                }
+            })
+            .catch(() => showMessage('Unable to save profile', 'error'));
+        }
+=======
+>>>>>>> 66d9265eb913a8a5633b58519ff12abcbe02c954
 
         function showMessage(msg, type) {
             const msgDiv = document.getElementById('message');
