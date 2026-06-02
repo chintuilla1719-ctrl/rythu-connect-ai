@@ -470,7 +470,32 @@
                     document.getElementById('profileState').value = user.state;
                 });
         }
+ function saveFarmerProfile() {
+            const data = {
+                fullName: document.getElementById('profileName').value,
+                phone: document.getElementById('profilePhone').value,
+                village: document.getElementById('profileVillage').value,
+                state: document.getElementById('profileState').value
+            };
 
+            fetch(`http://localhost:5000/api/users/${currentFarmerId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(r => r.json())
+            .then(res => {
+                if (res.error) {
+                    showMessage('Unable to save profile: ' + res.error, 'error');
+                } else {
+                    showMessage('Profile updated successfully!', 'success');
+                    localStorage.setItem('userName', data.fullName);
+                    currentFarmerName = data.fullName;
+                    document.getElementById('farmerNameDisplay').textContent = `Welcome, ${currentFarmerName}!`;
+                }
+            })
+            .catch(() => showMessage('Unable to save profile', 'error'));
+        }
         function editCrop(cropId) {
             fetch(`http://localhost:5000/api/crops/${cropId}`)
                 .then(r => r.json())
