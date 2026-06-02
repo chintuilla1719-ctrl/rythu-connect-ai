@@ -485,6 +485,13 @@
                     document.getElementById('profileState').value = user.state;
                 });
         }
+ function saveFarmerProfile() {
+            const data = {
+                fullName: document.getElementById('profileName').value,
+                phone: document.getElementById('profilePhone').value,
+                village: document.getElementById('profileVillage').value,
+                state: document.getElementById('profileState').value
+            };
 
         function saveFarmerProfile() {
             const data = {
@@ -512,7 +519,6 @@
             })
             .catch(() => showMessage('Unable to save profile', 'error'));
         }
-
         function editCrop(cropId) {
             fetch(`${API_URL}/crops/${cropId}`)
                 .then(r => r.json())
