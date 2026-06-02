@@ -62,7 +62,18 @@ Rythu Connect AI is an AI-powered agriculture platform designed to help farmers 
 ---
 
 ## 📂 Project Structure
-
+Rythu-Connect-AI/
+│
+├── index.html
+├── style.css
+├── script.js
+├── buyer.html
+├── farmer.html
+├── README.md
+├── SETUP_GUIDE.md
+├── user_manual.md
+│
+└── assets/
 ---
 
 ## 🎯 Objectives
