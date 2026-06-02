@@ -283,11 +283,11 @@
             </div>
             <div class="form-group">
                 <label>Phone</label>
-                <input type="tel" id="profilePhone">
+                <input type="tel" id="profilePhone" disabled>
             </div>
             <div class="form-group">
                 <label>Village</label>
-                <input type="text" id="profileVillage">
+                <input type="text" id="profileVillage" disabled>
             </div>
             <div class="form-group">
                 <label>State</label>
@@ -308,6 +308,20 @@
             loadFarmerOrders();
             loadFarmerProfile();
         });
+
+        const API_URL = '/api';
+
+        function authHeaders(json = true) {
+            const headers = {};
+            const token = localStorage.getItem('authToken');
+            if (token) {
+                headers.Authorization = `Bearer ${token}`;
+            }
+            if (json) {
+                headers['Content-Type'] = 'application/json';
+            }
+            return headers;
+        }
 
         function switchFarmerTab(tabName, event) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
@@ -353,10 +367,11 @@
             }
 
             const method = currentEditCropId ? 'PUT' : 'POST';
-            const url = currentEditCropId ? `http://localhost:5000/api/crops/${currentEditCropId}` : 'http://localhost:5000/api/crops';
+            const url = currentEditCropId ? `${API_URL}/crops/${currentEditCropId}` : `${API_URL}/crops`;
 
             fetch(url, {
                 method,
+                headers: authHeaders(false),
                 body: formData
             })
             .then(r => r.json())
@@ -371,7 +386,7 @@
         }
 
        function loadFarmerCrops() {
-    fetch(`http://localhost:5000/api/crops?farmerId=${currentFarmerId}`)
+    fetch(`${API_URL}/crops?farmerId=${currentFarmerId}`)
         .then(response => response.json())
         .then(crops => {
             const grid = document.getElementById('cropsGrid');
@@ -435,7 +450,7 @@
         });
 }
         function loadFarmerOrders() {
-            fetch(`http://localhost:5000/api/orders?farmerId=${currentFarmerId}`)
+            fetch(`${API_URL}/orders`, { headers: authHeaders() })
                 .then(r => r.json())
                 .then(orders => {
                     const table = document.getElementById('ordersTable');
@@ -460,7 +475,7 @@
         }
 
         function loadFarmerProfile() {
-            fetch(`http://localhost:5000/api/users/${currentFarmerId}`)
+            fetch(`${API_URL}/users/${currentFarmerId}`, { headers: authHeaders() })
                 .then(r => r.json())
                 .then(user => {
                     document.getElementById('profileName').value = user.fullName;
@@ -479,9 +494,9 @@
                 state: document.getElementById('profileState').value
             };
 
-            fetch(`http://localhost:5000/api/users/${currentFarmerId}`, {
+            fetch(`${API_URL}/users/${currentFarmerId}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: authHeaders(),
                 body: JSON.stringify(data)
             })
             .then(r => r.json())
@@ -499,7 +514,7 @@
         }
 
         function editCrop(cropId) {
-            fetch(`http://localhost:5000/api/crops/${cropId}`)
+            fetch(`${API_URL}/crops/${cropId}`)
                 .then(r => r.json())
                 .then(crop => {
                     currentEditCropId = cropId;
@@ -520,7 +535,7 @@
 
         function deleteCrop(cropId) {
             if (confirm('Are you sure?')) {
-                fetch(`http://localhost:5000/api/crops/${cropId}`, { method: 'DELETE' })
+                fetch(`${API_URL}/crops/${cropId}`, { method: 'DELETE', headers: authHeaders() })
                     .then(r => r.json())
                     .then(data => {
                         showMessage('Crop deleted!', 'success');
@@ -530,9 +545,9 @@
         }
 
         function updateOrderStatus(orderId, status) {
-            fetch(`http://localhost:5000/api/orders/${orderId}`, {
+            fetch(`${API_URL}/orders/${orderId}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: authHeaders(),
                 body: JSON.stringify({ status })
             })
             .then(r => r.json())

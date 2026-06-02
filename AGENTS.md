@@ -193,3 +193,5 @@ Uses AI-based natural language understanding.
 ## Conclusion
 
 The Rythu Connect AI platform uses specialized AI agents to provide intelligent agricultural assistance. These agents work together to support farmers with crop recommendations, disease detection, weather forecasting, market analysis, and farming guidance.
+
+
