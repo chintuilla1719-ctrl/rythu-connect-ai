@@ -79,7 +79,7 @@ Install the following software:
 Clone the repository:
 
 ```bash
-git clone https://code.swecha.org/Prashanth15/rythu-connect-ai.git
+git clone <repository-url>
 ```
 
 Navigate to the project folder:

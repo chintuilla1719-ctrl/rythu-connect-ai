@@ -291,7 +291,11 @@
             <button class="tab-btn active" onclick="switchBuyerTab('marketplace', event)">Marketplace</button>
             <button class="tab-btn" onclick="switchBuyerTab('orders', event)">My Orders</button>
             <button class="tab-btn" onclick="switchBuyerTab('profile', event)">Profile</button>
+<<<<<<< HEAD
         </div>
+=======
+        </div> <div class="tabs">
+>>>>>>> 66d9265eb913a8a5633b58519ff12abcbe02c954
 
         <!-- Marketplace Tab -->
         <div id="marketplaceTab" class="tab-content active">
@@ -584,6 +588,7 @@
             .catch(() => showMessage('Unable to save profile', 'error'));
         }
    
+<<<<<<< HEAD
 
         function saveBuyerProfile() {
             const data = {
@@ -610,6 +615,8 @@
             })
             .catch(() => showMessage('Unable to save profile', 'error'));
         }
+=======
+>>>>>>> 66d9265eb913a8a5633b58519ff12abcbe02c954
 
         function showMessage(msg, type) {
             const msgDiv = document.getElementById('message');

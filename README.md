@@ -50,6 +50,7 @@ Rythu Connect AI is an AI-powered agriculture platform designed to help farmers 
 - Node.js
 - Express.js
 - bcryptjs
+ -bcryptjs
 - jsonwebtoken
 
 ### Database
@@ -59,6 +60,8 @@ Rythu Connect AI is an AI-powered agriculture platform designed to help farmers 
 - Local file upload support
 - REST API powered marketplace
 - JWT-based authentication
+
+---
 
 ---
 
@@ -72,6 +75,18 @@ Rythu Connect AI is an AI-powered agriculture platform designed to help farmers 
 - `style.css` — global app styles
 - `.env.example` — example environment variables
 
+Rythu-Connect-AI/
+│
+├── index.html
+├── style.css
+├── script.js
+├── buyer.html
+├── farmer.html
+├── README.md
+├── SETUP_GUIDE.md
+├── user_manual.md
+│
+└── assets/
 ---
 
 ## 🎯 Objectives

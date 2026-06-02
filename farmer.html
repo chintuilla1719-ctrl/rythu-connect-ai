@@ -504,6 +504,9 @@
             fetch(`${API_URL}/users/${currentFarmerId}`, {
                 method: 'PUT',
                 headers: authHeaders(),
+            fetch(`http://localhost:5000/api/users/${currentFarmerId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             })
             .then(r => r.json())

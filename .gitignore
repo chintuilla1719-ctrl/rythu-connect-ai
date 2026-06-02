@@ -9,7 +9,11 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+<<<<<<< HEAD
 # Uploads
+=======
+ # Uploads
+>>>>>>> 66d9265eb913a8a5633b58519ff12abcbe02c954
 uploads/*
 !uploads/.gitkeep
 
