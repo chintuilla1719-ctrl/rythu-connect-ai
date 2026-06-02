@@ -1,11 +1,14 @@
 // API Configuration - automatically detects localhost vs production
 // Imported from config.js which handles dynamic URL resolution
 // Uses api-utils.js for enhanced fetch with timeout/retry
+
+// ============ GLOBAL MESSAGE & UTILconst API_URL =
 const API_URL =
     (typeof window !== 'undefined' && window.API_BASE_URL) ||
     (typeof API_BASE_URL !== 'undefined' && API_BASE_URL) ||
-    (typeof window !== 'undefined' && window.location &&
-        ['localhost', '127.0.0.1'].includes(window.location.hostname)
+    (
+         window.location.hostname === 'localhost' ||
+         window.location.hostname === '127.0.0.1'
         ? 'http://localhost:5000/api'
         : 'https://rythu-connect-ai.onrender.com/api');
 
@@ -14,9 +17,7 @@ console.log('[SCRIPT.JS] API_BASE_URL:', typeof API_BASE_URL !== 'undefined' ? A
 console.log('[SCRIPT.JS] window.API_BASE_URL:', typeof window !== 'undefined' ? window.API_BASE_URL : 'UNDEFINED');
 console.log('[SCRIPT.JS] apiFetch defined:', typeof apiFetch !== 'undefined');
 
-// ============ GLOBAL MESSAGE & UTILITY FUNCTIONS ============
 
-/**
  * Show message to user with type indicator
  * Works in any context (main page or iframe)
  */
