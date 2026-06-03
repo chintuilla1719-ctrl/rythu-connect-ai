@@ -1,3 +1,5 @@
+# Uploaded files
+uploads/
 # Node dependencies
 node_modules/
 
@@ -12,7 +14,6 @@ yarn-error.log*
 # OS generated files
 .DS_Store
 Thumbs.db
-
 # Optional npm cache directory
 .npm
 
