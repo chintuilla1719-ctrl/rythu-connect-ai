@@ -1,14 +1,11 @@
 // API Configuration - automatically detects localhost vs production
 // Imported from config.js which handles dynamic URL resolution
 // Uses api-utils.js for enhanced fetch with timeout/retry
-
-// ============ GLOBAL MESSAGE & UTILconst API_URL =
 const API_URL =
     (typeof window !== 'undefined' && window.API_BASE_URL) ||
     (typeof API_BASE_URL !== 'undefined' && API_BASE_URL) ||
-    (
-         window.location.hostname === 'localhost' ||
-         window.location.hostname === '127.0.0.1'
+    (typeof window !== 'undefined' && window.location &&
+        ['localhost', '127.0.0.1'].includes(window.location.hostname)
         ? 'http://localhost:5000/api'
         : 'https://rythu-connect-ai.onrender.com/api');
 
@@ -17,7 +14,9 @@ console.log('[SCRIPT.JS] API_BASE_URL:', typeof API_BASE_URL !== 'undefined' ? A
 console.log('[SCRIPT.JS] window.API_BASE_URL:', typeof window !== 'undefined' ? window.API_BASE_URL : 'UNDEFINED');
 console.log('[SCRIPT.JS] apiFetch defined:', typeof apiFetch !== 'undefined');
 
+// ============ GLOBAL MESSAGE & UTILITY FUNCTIONS ============
 
+/**
  * Show message to user with type indicator
  * Works in any context (main page or iframe)
  */
@@ -131,14 +130,9 @@ function farmerLogin() {
     const email = document.getElementById('farmerLoginEmail').value;
     const password = document.getElementById('farmerLoginPassword').value;
 
-    console.log('[FARMER LOGIN] ===== START LOGIN ====');
-    console.log('[FARMER LOGIN] Email:', email);
+    console.log('[FARMER LOGIN] Starting with email:', email);
     console.log('[FARMER LOGIN] API_URL:', API_URL);
-    console.log('[FARMER LOGIN] API_BASE_URL:', typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'UNDEFINED');
-    console.log('[FARMER LOGIN] User Agent:', navigator.userAgent);
-    console.log('[FARMER LOGIN] Online:', navigator.onLine);
-    console.log('[FARMER LOGIN] Current location:', window.location.href);
-    console.log('[FARMER LOGIN] apiFetch type:', typeof apiFetch);
+    console.log('[FARMER LOGIN] Network online:', typeof isOnline !== 'undefined' ? isOnline() : 'N/A');
 
    apiPost(`${API_URL}/auth/login`, { email, password })
 .then(res => {
@@ -165,11 +159,9 @@ function farmerLogin() {
 })
 .catch(err => {
     console.error('[FARMER LOGIN] Error caught:', err);
-    console.error('[FARMER LOGIN] Error name:', err.name);
     console.error('[FARMER LOGIN] Error message:', err.message);
     console.error('[FARMER LOGIN] Error stack:', err.stack);
     showMessage(getErrorMessage(err), 'error');
-    console.log('[FARMER LOGIN] ===== LOGIN FAILED ====');
 });
 }
 
@@ -208,13 +200,8 @@ function buyerLogin() {
     const email = document.getElementById('buyerLoginEmail').value;
     const password = document.getElementById('buyerLoginPassword').value;
 
-    console.log('[BUYER LOGIN] ===== START LOGIN ====');
-    console.log('[BUYER LOGIN] Email:', email);
+    console.log('[BUYER LOGIN] Starting with email:', email);
     console.log('[BUYER LOGIN] API_URL:', API_URL);
-    console.log('[BUYER LOGIN] API_BASE_URL:', typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'UNDEFINED');
-    console.log('[BUYER LOGIN] User Agent:', navigator.userAgent);
-    console.log('[BUYER LOGIN] Online:', navigator.onLine);
-    console.log('[BUYER LOGIN] Current location:', window.location.href);
 
     apiPost(`${API_URL}/auth/login`, { email, password })
     .then(res => {
@@ -241,11 +228,8 @@ function buyerLogin() {
     })
     .catch(err => {
         console.error('[BUYER LOGIN] Error caught:', err);
-        console.error('[BUYER LOGIN] Error name:', err.name);
         console.error('[BUYER LOGIN] Error message:', err.message);
-        console.error('[BUYER LOGIN] Error stack:', err.stack);
         showMessage(getErrorMessage(err), 'error');
-        console.log('[BUYER LOGIN] ===== LOGIN FAILED ====');
     });
 }
 
