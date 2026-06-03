@@ -17,7 +17,7 @@ Your Rythu Connect AI project has been completely transformed into a **professio
   - Crop CRUD operations (Create, Read, Update, Delete)
   - Order management system
   - Search & filtering APIs
-  - MongoDB Mongoose schemas for Users, Crops, and Orders
+  - MongoDB Mongoose schemas for Users, Crops, and orders
 
 **API Endpoints:**
 ```
