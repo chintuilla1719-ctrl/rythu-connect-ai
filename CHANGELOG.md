@@ -18,3 +18,4 @@ All notable changes to this project are documented in this file.
 - Buyer dashboard tab switching event handling
 - Safer order display formatting for incomplete order fields
 - Improved crop query sorting for newest listings first
+
