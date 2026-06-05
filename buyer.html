@@ -425,9 +425,15 @@
                 .catch(err => showMessage('Failed to load crops: ' + getErrorMessage(err), 'error'));
         }
 
-        function displayCrops(crops) {
+       function displayCrops(crops) { 
             const grid = document.getElementById('cropsGrid');
-            grid.innerHTML = crops.map(crop => `
+             console.log(crops); 
+             console.log(crops);
+console.log(crops.map(crop => ({
+    cropName: crop.cropName,
+    cropImage: crop.cropImage
+})));
+             grid.innerHTML = crops.map(crop => `
                 <div class="crop-card">
                     <img src="${crop.cropImage && crop.cropImage.trim() !== '' ? crop.cropImage : 'https://via.placeholder.com/300x200'}"
                         class="crop-image"
