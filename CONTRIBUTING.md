@@ -20,43 +20,43 @@ Contributors can participate in the project through:
 
 Develop and improve project features such as:
 
-* Crop Recommendation System
-* Disease Detection Module
-* Weather Forecast Integration
-* Market Price Analysis
-* AI Chatbot for Farmer Queries
-* User Authentication System
-* Farmer Dashboard
+- Crop Recommendation System
+- Disease Detection Module
+- Weather Forecast Integration
+- Market Price Analysis
+- AI Chatbot for Farmer Queries
+- User Authentication System
+- Farmer Dashboard
 
 ## 2. Bug Fixing
 
 Identify and fix:
 
-* UI/UX issues
-* API integration errors
-* Database issues
-* Performance bottlenecks
-* Security vulnerabilities
+- UI/UX issues
+- API integration errors
+- Database issues
+- Performance bottlenecks
+- Security vulnerabilities
 
 ## 3. Documentation
 
 Improve project documentation by:
 
-* Updating README.md
-* Improving USER_MANUAL.md
-* Updating AGENTS.md
-* Adding screenshots and examples
-* Fixing grammatical errors
+- Updating README.md
+- Improving USER_MANUAL.md
+- Updating AGENTS.md
+- Adding screenshots and examples
+- Fixing grammatical errors
 
 ## 4. Testing
 
 Contributors can:
 
-* Perform manual testing
-* Create test cases
-* Report bugs
-* Verify fixes
-* Test application functionality across devices
+- Perform manual testing
+- Create test cases
+- Report bugs
+- Verify fixes
+- Test application functionality across devices
 
 ---
 
@@ -66,33 +66,33 @@ Contributors can:
 
 Install the following software:
 
-* Node.js (14+)
-* npm
-* MongoDB
-* Git
-* Visual Studio Code or another editor
+- Node.js (14+)
+- npm
+- MongoDB
+- Git
+- Visual Studio Code or another editor
 
 ### Frontend
 
-* HTML5
-* CSS3
-* JavaScript
+- HTML5
+- CSS3
+- JavaScript
 
 ### Backend
 
-* Python 3.x
+- Python 3.x
 
 ### Database
 
-* MySQL / SQLite
+- MySQL / SQLite
 
 ### Version Control
 
-* Git
+- Git
 
 ### IDE
 
-* Visual Studio Code
+- Visual Studio Code
 
 ---
 
@@ -100,10 +100,10 @@ Install the following software:
 
 Clone the repository:
 
-```bash
+````bash
 git clone git clone https://code.swecha.org/Prashanth15/rythu-connect-ai.git
 ```<repository-url>
-```
+````
 
 Navigate to project folder:
 
@@ -171,12 +171,12 @@ docs/user-manual
 
 ## General Rules
 
-* Write clean and readable code.
-* Follow proper indentation.
-* Use meaningful variable names.
-* Remove unnecessary code.
-* Avoid code duplication.
-* Add comments where required.
+- Write clean and readable code.
+- Follow proper indentation.
+- Use meaningful variable names.
+- Remove unnecessary code.
+- Avoid code duplication.
+- Add comments where required.
 
 ### Good Example
 
@@ -222,11 +222,11 @@ Before creating a pull request:
 
 ### Checklist
 
-* Code compiles successfully.
-* Feature works correctly.
-* No unnecessary files included.
-* Documentation updated.
-* Code reviewed by team members.
+- Code compiles successfully.
+- Feature works correctly.
+- No unnecessary files included.
+- Documentation updated.
+- Code reviewed by team members.
 
 ### Pull Request Template
 
@@ -254,29 +254,29 @@ Before submitting code:
 
 Verify:
 
-* User registration
-* User login
-* Crop recommendation
-* Disease detection
-* Weather information
-* Market price updates
+- User registration
+- User login
+- Crop recommendation
+- Disease detection
+- Weather information
+- Market price updates
 
 ## User Interface Testing
 
 Check:
 
-* Button functionality
-* Form validation
-* Responsive design
-* Mobile compatibility
+- Button functionality
+- Form validation
+- Responsive design
+- Mobile compatibility
 
 ## Performance Testing
 
 Ensure:
 
-* Fast page loading
-* Efficient API responses
-* Smooth user experience
+- Fast page loading
+- Efficient API responses
+- Smooth user experience
 
 ---
 
@@ -296,10 +296,10 @@ Weather data not loading on dashboard
 
 Provide:
 
-* Detailed explanation
-* Expected result
-* Actual result
-* Steps to reproduce
+- Detailed explanation
+- Expected result
+- Actual result
+- Steps to reproduce
 
 ## Screenshots
 
@@ -311,17 +311,17 @@ Attach screenshots whenever possible.
 
 All documentation should:
 
-* Use clear language.
-* Include examples.
-* Follow Markdown format.
-* Be updated whenever features change.
+- Use clear language.
+- Include examples.
+- Follow Markdown format.
+- Be updated whenever features change.
 
 Required documents:
 
-* README.md
-* CONTRIBUTING.md
-* USER_MANUAL.md
-* AGENTS.md
+- README.md
+- CONTRIBUTING.md
+- USER_MANUAL.md
+- AGENTS.md
 
 ---
 
@@ -331,11 +331,11 @@ Every contribution should be reviewed before merging.
 
 Reviewers should verify:
 
-* Code quality
-* Functionality
-* Documentation updates
-* Security considerations
-* Performance impact
+- Code quality
+- Functionality
+- Documentation updates
+- Security considerations
+- Performance impact
 
 ---
 
@@ -343,21 +343,21 @@ Reviewers should verify:
 
 Contributors must:
 
-* Never expose API keys.
-* Never commit passwords.
-* Validate user input.
-* Follow secure coding practices.
-* Protect sensitive information.
+- Never expose API keys.
+- Never commit passwords.
+- Validate user input.
+- Follow secure coding practices.
+- Protect sensitive information.
 
 ---
 
 # Team Collaboration Rules
 
-* Communicate respectfully.
-* Share progress regularly.
-* Resolve conflicts professionally.
-* Help other team members when needed.
-* Maintain transparency in development.
+- Communicate respectfully.
+- Share progress regularly.
+- Resolve conflicts professionally.
+- Help other team members when needed.
+- Maintain transparency in development.
 
 ---
 

@@ -11,15 +11,17 @@ Your Rythu Connect AI project has been completely transformed into a **professio
 ### ✨ **Backend (Node.js + Express + MongoDB)**
 
 **Updated Files:**
+
 - `package.json` - Added: mongoose, dotenv, bcryptjs, jsonwebtoken, multer
 - `server.js` - Complete RESTful API with:
-  - User authentication (Farmer & Buyer registration/login)
-  - Crop CRUD operations (Create, Read, Update, Delete)
-  - Order management system
-  - Search & filtering APIs
-  - MongoDB Mongoose schemas for Users, Crops, and orders
+    - User authentication (Farmer & Buyer registration/login)
+    - Crop CRUD operations (Create, Read, Update, Delete)
+    - Order management system
+    - Search & filtering APIs
+    - MongoDB Mongoose schemas for Users, Crops, and orders
 
 **API Endpoints:**
+
 ```
 POST   /api/auth/register      - Register new user (farmer/buyer)
 POST   /api/auth/login         - Login user
@@ -44,65 +46,68 @@ PUT    /api/orders/:id         - Update order status
 **Updated Files:**
 
 1. **index.html** - Landing Page
-   - Modern hero section
-   - Dual role selection (Farmer/Buyer)
-   - Responsive authentication modals
-   - Separate login/registration tabs for each role
+    - Modern hero section
+    - Dual role selection (Farmer/Buyer)
+    - Responsive authentication modals
+    - Separate login/registration tabs for each role
 
 2. **farmer.html** - Farmer Dashboard
-   - **My Crops Tab**: View all listed crops with edit/delete options
-   - **Add New Crop Tab**: Form to add crops with details:
-     - Crop name, description, quantity
-     - Price per unit, crop image
-     - Harvest date, certifications
-   - **Orders Tab**: View all orders for crops with status management
-     - Update order status (Pending → Confirmed → Shipped → Delivered)
-   - **Profile Tab**: View farmer information
+    - **My Crops Tab**: View all listed crops with edit/delete options
+    - **Add New Crop Tab**: Form to add crops with details:
+        - Crop name, description, quantity
+        - Price per unit, crop image
+        - Harvest date, certifications
+    - **Orders Tab**: View all orders for crops with status management
+        - Update order status (Pending → Confirmed → Shipped → Delivered)
+    - **Profile Tab**: View farmer information
 
 3. **buyer.html** - Buyer Marketplace
-   - **Marketplace Tab**: Browse all available crops
-     - Search by crop name
-     - Filter by state, price range
-     - Card-based layout with farmer info
-     - One-click order placement
-   - **My Orders Tab**: Track all placed orders
-     - Order details with status badges
-     - Order date and expected delivery
-   - **Profile Tab**: View buyer information
+    - **Marketplace Tab**: Browse all available crops
+        - Search by crop name
+        - Filter by state, price range
+        - Card-based layout with farmer info
+        - One-click order placement
+    - **My Orders Tab**: Track all placed orders
+        - Order details with status badges
+        - Order date and expected delivery
+    - **Profile Tab**: View buyer information
 
 4. **script.js** - Global Authentication System
-   - Farmer registration/login
-   - Buyer registration/login
-   - Session management with localStorage
-   - Logout functionality
-   - Auto-login check on page load
+    - Farmer registration/login
+    - Buyer registration/login
+    - Session management with localStorage
+    - Logout functionality
+    - Auto-login check on page load
 
 5. **style.css** - Responsive Design
-   - Beautiful gradient backgrounds
-   - Mobile-responsive layout
-   - Modern button and form styling
-   - Sticky navigation bar
-   - Tab system with smooth transitions
+    - Beautiful gradient backgrounds
+    - Mobile-responsive layout
+    - Modern button and form styling
+    - Sticky navigation bar
+    - Tab system with smooth transitions
 
 6. **.env** - Environment Configuration
-   - MongoDB URI configuration
-   - Port and JWT settings
+    - MongoDB URI configuration
+    - Port and JWT settings
 
 ---
 
 ## 🚀 How to Run
 
 ### **1. Prerequisites**
+
 - Node.js (v14 or higher)
 - MongoDB running locally OR MongoDB Atlas cloud connection
 
 ### **2. Start MongoDB** (if using local)
+
 ```powershell
 # Start MongoDB service
 mongod
 ```
 
 ### **3. Start the Server**
+
 ```powershell
 cd "c:\Users\Govardhana\OneDrive\Desktop\rythu-connect-ai\rythu-connect-ai"
 npm start
@@ -111,6 +116,7 @@ npm start
 The server will run on: **http://localhost:5000**
 
 ### **4. Open in Browser**
+
 ```
 http://localhost:5000/
 ```
@@ -120,6 +126,7 @@ http://localhost:5000/
 ## 🔐 Demo Test Accounts (Create These)
 
 ### **Farmer Account**
+
 - **Name**: Ramesh Kumar
 - **Email**: ramesh@farm.com
 - **Password**: password123
@@ -128,6 +135,7 @@ http://localhost:5000/
 - **State**: Telangana
 
 ### **Buyer Account**
+
 - **Name**: Priya Patel
 - **Email**: priya@buy.com
 - **Password**: password123
@@ -140,35 +148,41 @@ http://localhost:5000/
 ## 📱 Features Implemented
 
 ✅ **User Management**
+
 - Separate farmer and buyer authentication
 - Role-based dashboard access
 - User profiles with location info
 
 ✅ **Crop Management**
+
 - Add, edit, delete crop listings
 - Set quantity and price per unit
 - Add crop descriptions and harvest dates
 - Support for certifications (Organic, Non-GMO, etc.)
 
 ✅ **Marketplace**
+
 - Browse all available crops
 - Search by crop name
 - Filter by state and price range
 - View farmer information on crop cards
 
 ✅ **Order System**
+
 - Place orders with quantity selection
 - Specify delivery address
 - Set expected delivery date
 - Real-time total price calculation
 
 ✅ **Order Tracking**
+
 - Farmers can see all orders for their crops
 - Buyers can track order status
 - Status updates: Pending → Confirmed → Shipped → Delivered
 - Order ID generation with timestamp
 
 ✅ **Responsive Design**
+
 - Mobile-friendly interface
 - Works on tablets and desktops
 - Touch-friendly buttons and forms
@@ -178,6 +192,7 @@ http://localhost:5000/
 ## 📊 Database Schema
 
 ### **Users Collection**
+
 ```javascript
 {
   fullName: String,
@@ -193,6 +208,7 @@ http://localhost:5000/
 ```
 
 ### **Crops Collection**
+
 ```javascript
 {
   farmerId: ObjectId,
@@ -212,6 +228,7 @@ http://localhost:5000/
 ```
 
 ### **Orders Collection**
+
 ```javascript
 {
   orderId: String (ORD-timestamp),
@@ -233,6 +250,7 @@ http://localhost:5000/
 ## 🔧 Configuration
 
 ### **.env File Settings**
+
 ```
 MONGODB_URI=mongodb://localhost:27017/rythu-connect
 NODE_ENV=development
@@ -241,7 +259,9 @@ JWT_SECRET=YOUR_SECRET_HERE
 ```
 
 ### **To Use MongoDB Atlas (Cloud)**
+
 Replace `MONGODB_URI` in `.env`:
+
 ```
 MONGODB_URI=<your-mongodb-connection-string>
 ```
@@ -251,39 +271,40 @@ MONGODB_URI=<your-mongodb-connection-string>
 ## 🎯 Next Steps (Optional Enhancements)
 
 1. **Payment Integration**
-   - Add Razorpay or Stripe for payments
-   - Implement payment tracking
+    - Add Razorpay or Stripe for payments
+    - Implement payment tracking
 
 2. **Image Upload**
-   - Setup Multer file uploads
-   - Store images in AWS S3 or local storage
+    - Setup Multer file uploads
+    - Store images in AWS S3 or local storage
 
 3. **Email Notifications**
-   - Order confirmation emails
-   - Status update notifications
+    - Order confirmation emails
+    - Status update notifications
 
 4. **Rating & Reviews**
-   - Farmers can rate buyers
-   - Buyers can rate farmers and crops
-   - Star-based rating system
+    - Farmers can rate buyers
+    - Buyers can rate farmers and crops
+    - Star-based rating system
 
 5. **Advanced Search**
-   - Filter by certifications
-   - Filter by harvest date
-   - Sort by price, quantity
+    - Filter by certifications
+    - Filter by harvest date
+    - Sort by price, quantity
 
 6. **Chat System**
-   - Direct messaging between farmers and buyers
-   - Real-time notifications
+    - Direct messaging between farmers and buyers
+    - Real-time notifications
 
 7. **Admin Dashboard**
-   - Platform statistics
-   - User management
-   - Transaction history
+    - Platform statistics
+    - User management
+    - Transaction history
 
 ---
 
 ## 📱 Mobile App (Future)
+
 - React Native or Flutter app
 - Push notifications
 - Offline support
@@ -293,21 +314,27 @@ MONGODB_URI=<your-mongodb-connection-string>
 ## 🐛 Troubleshooting
 
 ### **MongoDB Connection Error**
+
 ```
 Error: connect ECONNREFUSED 127.0.0.1:27017
 ```
+
 **Solution**: Start MongoDB service or update MONGODB_URI in .env
 
 ### **Port Already in Use**
+
 ```
 Error: listen EADDRINUSE :::5000
 ```
+
 **Solution**: Change PORT in .env or kill process using port 5000
 
 ### **CORS Errors**
+
 Check that `app.use(cors())` is enabled in server.js
 
 ### **Missing Dependencies**
+
 ```
 npm install
 ```
@@ -345,6 +372,7 @@ rythu-connect-ai/
 ## 📞 Support
 
 For issues or questions:
+
 1. Check the troubleshooting section
 2. Review API documentation
 3. Check browser console for errors
@@ -355,6 +383,7 @@ For issues or questions:
 ## ✨ Summary
 
 Your platform is now **production-ready** with:
+
 - ✅ Complete authentication system
 - ✅ Crop management CRUD
 - ✅ Order placement and tracking
@@ -370,4 +399,3 @@ Your platform is now **production-ready** with:
 **Last Updated**: May 31, 2026
 **Version**: 2.0.0
 **Status**: ✅ Complete
-

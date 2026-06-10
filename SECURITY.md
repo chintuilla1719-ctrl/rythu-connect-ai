@@ -6,10 +6,10 @@ If you discover a security vulnerability in Rythu Connect AI, please report it r
 
 Please include:
 
-* Description of the issue
-* Steps to reproduce
-* Potential impact
-* Suggested fix (if available)
+- Description of the issue
+- Steps to reproduce
+- Potential impact
+- Suggested fix (if available)
 
 We will review and address valid security reports as quickly as possible.
 
