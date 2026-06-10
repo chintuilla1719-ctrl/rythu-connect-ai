@@ -1,11 +1,9 @@
 const express = require("express");
-const cors = require("cors");
 const mongoose = require("mongoose");
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 require("dotenv").config();
-const dns = require('dns').promises;
 
 const app = express();
 
