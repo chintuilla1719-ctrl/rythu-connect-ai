@@ -237,13 +237,13 @@ http://localhost:5000/
 MONGODB_URI=mongodb://localhost:27017/rythu-connect
 NODE_ENV=development
 PORT=5000
-JWT_SECRET=your-secret-key-here
+JWT_SECRET=YOUR_SECRET_HERE
 ```
 
 ### **To Use MongoDB Atlas (Cloud)**
 Replace `MONGODB_URI` in `.env`:
 ```
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/rythu-connect
+MONGODB_URI=<your-mongodb-connection-string>
 ```
 
 ---
