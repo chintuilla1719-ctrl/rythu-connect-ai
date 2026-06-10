@@ -1,0 +1,16 @@
+stages:
+  - audit
+  - test
+
+audit:
+  stage: audit
+  image: node:20
+  script:
+    - npm ci
+    - npm audit --audit-level=high
+
+test:
+  stage: test
+  image: node:20
+  script:
+    - npm test
