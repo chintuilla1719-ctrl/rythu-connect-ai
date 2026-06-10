@@ -1,14 +1,28 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Farmer Dashboard - Rythu Connect AI</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Arial; background: #f5f5f5; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
         .header {
             background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
             color: white;
@@ -78,10 +92,23 @@
             transition: all 0.3s;
         }
 
-        .btn-primary { background: #2ecc71; color: white; }
-        .btn-primary:hover { background: #27ae60; }
-        .btn-danger { background: #e74c3c; color: white; }
-        .btn-danger:hover { background: #c0392b; }
+        .btn-primary {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #27ae60;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
 
         .crops-grid {
             display: grid;
@@ -94,22 +121,22 @@
             background: white;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s;
         }
 
         .crop-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
         }
 
         .crop-image {
-    width: 100%;
-    height: 220px;
-    object-fit: cover;
-    display: block;
-    background: #f0f0f0;
-}
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+            background: #f0f0f0;
+        }
 
         .crop-details {
             padding: 15px;
@@ -171,13 +198,14 @@
             .crops-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .form-group {
                 margin-bottom: 10px;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
@@ -188,10 +216,13 @@
         <div id="message" class="message"></div>
 
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchFarmerTab('crops', event)">My Crops</button>
-            <button class="tab-btn" onclick="switchFarmerTab('add', event)">Add New Crop</button>
-            <button class="tab-btn" onclick="switchFarmerTab('orders', event)">Orders</button>
-            <button class="tab-btn" onclick="switchFarmerTab('profile', event)">Profile</button>
+            <button type="button" class="tab-btn active" onclick="switchFarmerTab('crops', event)">My Crops</button>
+
+            <button type="button" class="tab-btn" onclick="switchFarmerTab('add', event)">Add New Crop</button>
+
+            <button type="button" class="tab-btn" onclick="switchFarmerTab('orders', event)">Orders</button>
+
+            <button type="button" class="tab-btn" onclick="switchFarmerTab('profile', event)">Profile</button>
         </div>
 
         <!-- My Crops Tab -->
@@ -300,7 +331,7 @@
     <script src="api-utils.js"></script>
     <script src="script.js"></script>
     <script>
-        let currentFarmerId = localStorage.getItem('userId');
+        const currentFarmerId = localStorage.getItem('userId');
         let currentFarmerName = localStorage.getItem('userName');
         let currentEditCropId = null;
 
@@ -312,14 +343,19 @@
         });
 
         function switchFarmerTab(tabName, event) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(tabName + 'Tab').classList.add('active');
-            if (event && event.target) {
+            document.querySelectorAll('.tab-content').forEach((tab) => {
+                tab.classList.remove('active');
+            });
+
+            document.querySelectorAll('.tab-btn').forEach((btn) => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`${tabName}Tab`).classList.add('active');
+            if (event?.target) {
                 event.target.classList.add('active');
             }
         }
-window.switchFarmerTab = switchFarmerTab;
+        window.switchFarmerTab = switchFarmerTab;
         function resetCropForm() {
             currentEditCropId = null;
             document.getElementById('cropFormButton').textContent = 'Add Crop';
@@ -333,7 +369,7 @@ window.switchFarmerTab = switchFarmerTab;
             document.getElementById('certifications').value = '';
         }
 
-        function addCrop(e) {
+        function _addCrop(e) {
             e.preventDefault();
             const imageFile = document.getElementById('cropImage').files[0];
             const formData = new FormData();
@@ -360,31 +396,31 @@ window.switchFarmerTab = switchFarmerTab;
             // Use FormData for file uploads
             const apiFunction = method === 'PUT' ? apiPutFormData : apiPostFormData;
             apiFunction(url, formData)
-            .then(data => {
-                if (data.error) throw new Error(data.error);
-                showMessage(currentEditCropId ? 'Crop updated successfully!' : 'Crop added successfully!', 'success');
-                resetCropForm();
-                loadFarmerCrops();
-                switchFarmerTab('crops');
-            })
-            .catch(err => showMessage('Error saving crop: ' + getErrorMessage(err), 'error'));
+                .then(data => {
+                    if (data.error) throw new Error(data.error);
+                    showMessage(currentEditCropId ? 'Crop updated successfully!' : 'Crop added successfully!', 'success');
+                    resetCropForm();
+                    loadFarmerCrops();
+                    switchFarmerTab('crops');
+                })
+                .catch(err => showMessage(`Error saving crop: ${getErrorMessage(err)}`, 'error'));
         }
 
-       function loadFarmerCrops() {
-    apiGet(`${API_BASE_URL}/crops?farmerId=${encodeURIComponent(currentFarmerId)}`)
-        .then(crops => {
-            const grid = document.getElementById('cropsGrid');
+        function loadFarmerCrops() {
+            apiGet(`${API_BASE_URL}/crops?farmerId=${encodeURIComponent(currentFarmerId)}`)
+                .then(crops => {
+                    const grid = document.getElementById('cropsGrid');
 
-            if (!crops.length) {
-                grid.innerHTML = `
+                    if (!crops.length) {
+                        grid.innerHTML = `
                     <div style="padding:20px;background:white;border-radius:10px;">
                         No crops added yet.
                     </div>
                 `;
-                return;
-            }
+                        return;
+                    }
 
-            grid.innerHTML = crops.map(crop => `
+                    grid.innerHTML = crops.map(crop => `
                 <div class="crop-card">
 
                     <img
@@ -428,12 +464,12 @@ window.switchFarmerTab = switchFarmerTab;
 
                 </div>
             `).join('');
-        })
-        .catch(error => {
-            console.error(error);
-            showMessage('Failed to load crops: ' + getErrorMessage(error), 'error');
-        });
-}
+                })
+                .catch(error => {
+                    console.error(error);
+                    showMessage(`Failed to load crops: ${getErrorMessage(error)}`, 'error');
+                });
+        }
         function loadFarmerOrders() {
             apiGet(`${API_BASE_URL}/orders?farmerId=${encodeURIComponent(currentFarmerId)}`)
                 .then(orders => {
@@ -468,7 +504,7 @@ window.switchFarmerTab = switchFarmerTab;
                     document.getElementById('profileState').value = user.state;
                 });
         }
- function saveFarmerProfile() {
+        function _saveFarmerProfile() {
             const data = {
                 fullName: document.getElementById('profileName').value,
                 phone: document.getElementById('profilePhone').value,
@@ -481,20 +517,20 @@ window.switchFarmerTab = switchFarmerTab;
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             })
-            .then(r => r.json())
-            .then(res => {
-                if (res.error) {
-                    showMessage('Unable to save profile: ' + res.error, 'error');
-                } else {
-                    showMessage('Profile updated successfully!', 'success');
-                    localStorage.setItem('userName', data.fullName);
-                    currentFarmerName = data.fullName;
-                    document.getElementById('farmerNameDisplay').textContent = `Welcome, ${currentFarmerName}!`;
-                }
-            })
-            .catch(() => showMessage('Unable to save profile', 'error'));
+                .then(r => r.json())
+                .then(res => {
+                    if (res.error) {
+                        showMessage(`Unable to save profile: ${res.error}`, 'error');
+                    } else {
+                        showMessage('Profile updated successfully!', 'success');
+                        localStorage.setItem('userName', data.fullName);
+                        currentFarmerName = data.fullName;
+                        document.getElementById('farmerNameDisplay').textContent = `Welcome, ${currentFarmerName}!`;
+                    }
+                })
+                .catch(() => showMessage('Unable to save profile', 'error'));
         }
-        function editCrop(cropId) {
+        function _editCrop(cropId) {
             apiGet(`${API_BASE_URL}/crops/${encodeURIComponent(cropId)}`)
                 .then(crop => {
                     currentEditCropId = cropId;
@@ -510,50 +546,51 @@ window.switchFarmerTab = switchFarmerTab;
                     document.getElementById('certifications').value = (crop.certifications || []).join(', ');
                     document.getElementById('cropImage').value = '';
                 })
-                .catch(err => showMessage('Could not load crop for editing: ' + getErrorMessage(err), 'error'));
+                .catch(err => showMessage(`Could not load crop for editing: ${getErrorMessage(err)}`, 'error'));
         }
 
-        function deleteCrop(cropId) {
+        function _deleteCrop(cropId) {
             if (confirm('Are you sure?')) {
                 apiDelete(`${API_BASE_URL}/crops/${encodeURIComponent(cropId)}`)
                     .then(data => {
                         showMessage('Crop deleted!', 'success');
                         loadFarmerCrops();
                     })
-                    .catch(err => showMessage('Error deleting crop: ' + getErrorMessage(err), 'error'));
+                    .catch(err => showMessage(`Error deleting crop: ${getErrorMessage(err)}`, 'error'));
             }
         }
 
-        function updateOrderStatus(orderId, status) {
+        function _updateOrderStatus(orderId, status) {
             apiPut(`${API_BASE_URL}/orders/${encodeURIComponent(orderId)}`, { status })
-            .then(data => {
-                showMessage('Order status updated!', 'success');
-                loadFarmerOrders();
-            })
-            .catch(err => showMessage('Error updating order: ' + getErrorMessage(err), 'error'));
+                .then(data => {
+                    showMessage('Order status updated!', 'success');
+                    loadFarmerOrders();
+                })
+                .catch(err => showMessage(`Error updating order: ${getErrorMessage(err)}`, 'error'));
         }
 
         function showMessage(msg, type) {
             const msgDiv = document.getElementById('message');
             msgDiv.textContent = msg;
-            msgDiv.className = 'message ' + type;
+            msgDiv.className = `message ${type}`;
             setTimeout(() => msgDiv.className = 'message', 5000);
         }
     </script>
     <!-- Add here -->
 
-<section style="margin: 30px; padding: 20px; border: 1px solid #ddd;">
-    <h2>Farming Tips</h2>
-    <ul>
-        <li>Use certified seeds for better yield.</li>
-        <li>Monitor weather forecasts regularly.</li>
-        <li>Apply fertilizers according to recommendations.</li>
-        <li>Inspect crops regularly for diseases and pests.</li>
-    </ul>
-</section>
+    <section style="margin: 30px; padding: 20px; border: 1px solid #ddd;">
+        <h2>Farming Tips</h2>
+        <ul>
+            <li>Use certified seeds for better yield.</li>
+            <li>Monitor weather forecasts regularly.</li>
+            <li>Apply fertilizers according to recommendations.</li>
+            <li>Inspect crops regularly for diseases and pests.</li>
+        </ul>
+    </section>
 
-<footer>
-    <p>Developed by Rythu Connect AI Team</p>
-</footer>
+    <footer>
+        <p>Developed by Rythu Connect AI Team</p>
+    </footer>
 </body>
+
 </html>

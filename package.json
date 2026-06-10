@@ -8,6 +8,8 @@
 		"prepare": "husky",
 		"lint": "eslint .",
 		"format": "prettier --write .",
+		"biome": "biome check .",
+		"biome:fix": "biome check --write .",
 		"test": "vitest",
 		"coverage": "vitest run --coverage",
 		"knip": "knip",

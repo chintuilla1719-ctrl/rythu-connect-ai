@@ -88,16 +88,6 @@ apiFunction(url, formData)  // ✅ Handles multipart correctly
 <script src="script.js"></script>
 ```
 
-**After:**
-```html
-<!-- Both now consistent -->
-<script src="config.js"></script>
-<script src="api-utils.js"></script>
-<script src="script.js"></script>
-```
-
----
-
 ### ✅ ISSUE 6: Missing Error Messages for Silent Failures
 **Files:** [farmer.html](farmer.html#L375), [buyer.html](buyer.html#L422)  
 **Problem:** Some fetch calls had `.catch(error => { console.error(error); })` - users got no feedback.
