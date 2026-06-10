@@ -41,13 +41,15 @@ audit:
         - npm audit --audit-level=high
 
 test:
-    stage: test
-    image: node:20
-    script:
-        - npm test
+  stage: test
+  image: node:20
+  script:
+    - npm ci
+    - npm test
 
 coverage:
-    stage: coverage
-    image: node:20
-    script:
-        - npm test -- --coverage
+  stage: coverage
+  image: node:20
+  script:
+    - npm ci
+    - npm test -- --coverage
