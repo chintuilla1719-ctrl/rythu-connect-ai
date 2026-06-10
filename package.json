@@ -10,7 +10,7 @@
 		"format": "prettier --write .",
 		"biome": "biome check .",
 		"biome:fix": "biome check --write .",
-		"test": "vitest",
+	  "test": "vitest run --passWithNoTests",
 		"coverage": "vitest run --coverage",
 		"knip": "knip",
 		"oxlint": "oxlint .",
