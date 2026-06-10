@@ -1,3 +1,4 @@
+/* global API_BASE_URL, apiPost, getErrorMessage, isOnline */
 // API Configuration - automatically detects localhost vs production
 // Imported from config.js which handles dynamic URL resolution
 // Uses api-utils.js for enhanced fetch with timeout/retry
@@ -56,7 +57,7 @@ function showMessage(msg, type = "info") {
 
 // ============ GLOBAL AUTH FUNCTIONS ============
 
-function _showFarmerAuth() {
+function showFarmerAuth() {
 	document.getElementById("farmerAuthModal").classList.remove("hidden");
 }
 
@@ -64,7 +65,7 @@ function closeFarmerAuth() {
 	document.getElementById("farmerAuthModal").classList.add("hidden");
 }
 
-function _showBuyerAuth() {
+function showBuyerAuth() {
 	document.getElementById("buyerAuthModal").classList.remove("hidden");
 }
 
@@ -97,7 +98,7 @@ function switchTab(role, tabType) {
 
 // ============ FARMER AUTH ============
 
-function _farmerRegister() {
+function farmerRegister() {
 	const data = {
 		fullName: document.getElementById("farmerName").value,
 		email: document.getElementById("farmerEmail").value,
@@ -131,7 +132,7 @@ function _farmerRegister() {
 		.catch((err) => showMessage(getErrorMessage(err), "error"));
 }
 
-function _farmerLogin() {
+function farmerLogin() {
 	const email = document.getElementById("farmerLoginEmail").value;
 	const password = document.getElementById("farmerLoginPassword").value;
 
@@ -175,7 +176,7 @@ function _farmerLogin() {
 
 // ============ BUYER AUTH ============
 
-function _buyerRegister() {
+function buyerRegister() {
 	const data = {
 		fullName: document.getElementById("buyerName").value,
 		email: document.getElementById("buyerEmail").value,
@@ -209,7 +210,7 @@ function _buyerRegister() {
 		.catch((err) => showMessage(getErrorMessage(err), "error"));
 }
 
-function _buyerLogin() {
+function buyerLogin() {
 	const email = document.getElementById("buyerLoginEmail").value;
 	const password = document.getElementById("buyerLoginPassword").value;
 
@@ -248,7 +249,7 @@ function _buyerLogin() {
 
 // ============ LOGOUT ============
 
-function _logout() {
+function logout() {
 	if (confirm("Are you sure you want to logout?")) {
 		localStorage.clear();
 		location.reload();
@@ -281,3 +282,10 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	}
 });
+window.showFarmerAuth = showFarmerAuth;
+window.showBuyerAuth = showBuyerAuth;
+window.farmerRegister = farmerRegister;
+window.farmerLogin = farmerLogin;
+window.buyerRegister = buyerRegister;
+window.buyerLogin = buyerLogin;
+window.logout = logout;
