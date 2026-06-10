@@ -468,7 +468,32 @@ window.switchFarmerTab = switchFarmerTab;
                     document.getElementById('profileState').value = user.state;
                 });
         }
+ function saveFarmerProfile() {
+            const data = {
+                fullName: document.getElementById('profileName').value,
+                phone: document.getElementById('profilePhone').value,
+                village: document.getElementById('profileVillage').value,
+                state: document.getElementById('profileState').value
+            };
 
+            fetch(`http://localhost:5000/api/users/${currentFarmerId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(r => r.json())
+            .then(res => {
+                if (res.error) {
+                    showMessage('Unable to save profile: ' + res.error, 'error');
+                } else {
+                    showMessage('Profile updated successfully!', 'success');
+                    localStorage.setItem('userName', data.fullName);
+                    currentFarmerName = data.fullName;
+                    document.getElementById('farmerNameDisplay').textContent = `Welcome, ${currentFarmerName}!`;
+                }
+            })
+            .catch(() => showMessage('Unable to save profile', 'error'));
+        }
         function editCrop(cropId) {
             apiGet(`${API_BASE_URL}/crops/${encodeURIComponent(cropId)}`)
                 .then(crop => {
@@ -515,5 +540,20 @@ window.switchFarmerTab = switchFarmerTab;
             setTimeout(() => msgDiv.className = 'message', 5000);
         }
     </script>
+    <!-- Add here -->
+
+<section style="margin: 30px; padding: 20px; border: 1px solid #ddd;">
+    <h2>Farming Tips</h2>
+    <ul>
+        <li>Use certified seeds for better yield.</li>
+        <li>Monitor weather forecasts regularly.</li>
+        <li>Apply fertilizers according to recommendations.</li>
+        <li>Inspect crops regularly for diseases and pests.</li>
+    </ul>
+</section>
+
+<footer>
+    <p>Developed by Rythu Connect AI Team</p>
+</footer>
 </body>
 </html>

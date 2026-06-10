@@ -288,10 +288,10 @@
         <div id="message" class="message"></div>
 
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchBuyerTab('marketplace')">Marketplace</button>
-            <button class="tab-btn" onclick="switchBuyerTab('orders')">My Orders</button>
-            <button class="tab-btn" onclick="switchBuyerTab('profile')">Profile</button>
-        </div>
+            <button class="tab-btn active" onclick="switchBuyerTab('marketplace', event)">Marketplace</button>
+            <button class="tab-btn" onclick="switchBuyerTab('orders', event)">My Orders</button>
+            <button class="tab-btn" onclick="switchBuyerTab('profile', event)">Profile</button>
+        </div> <div class="tabs">
 
         <!-- Marketplace Tab -->
         <div id="marketplaceTab" class="tab-content active">
@@ -544,6 +544,32 @@ console.log(crops);
                 })
                 .catch(err => showMessage('Failed to load profile: ' + getErrorMessage(err), 'error'));
         }
+     function saveBuyerProfile() {
+            const data = {
+                fullName: document.getElementById('profileName').value,
+                phone: document.getElementById('profilePhone').value,
+                village: document.getElementById('profileVillage').value,
+                state: document.getElementById('profileState').value
+            };
+
+            fetch(`http://localhost:5000/api/users/${currentBuyerId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(r => r.json())
+            .then(res => {
+                if (res.error) {
+                    showMessage('Unable to save profile: ' + res.error, 'error');
+                } else {
+                    showMessage('Profile updated successfully!', 'success');
+                    localStorage.setItem('userName', data.fullName);
+                    document.getElementById('buyerNameDisplay').textContent = `Welcome, ${data.fullName}!`;
+                }
+            })
+            .catch(() => showMessage('Unable to save profile', 'error'));
+        }
+   
 
         function showMessage(msg, type) {
             const msgDiv = document.getElementById('message');

@@ -10,7 +10,7 @@ Rythu Connect AI uses multiple intelligent agents to assist farmers in making be
 
 ## System Workflow
 
-User Input → Agent Processing → Analysis → Response Generation → User Output
+User Input → Agent Processing → Analysis → Response Generation → User output
 
 ---
 
