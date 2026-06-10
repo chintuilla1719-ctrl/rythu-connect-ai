@@ -433,9 +433,10 @@ console.log(crops.map(crop => ({
     cropName: crop.cropName,
     cropImage: crop.cropImage
 })));
+console.log(crops);
              grid.innerHTML = crops.map(crop => `
                 <div class="crop-card">
-                    <img src="${crop.cropImage && crop.cropImage.trim() !== '' ? crop.cropImage : 'https://via.placeholder.com/300x200'}"
+                    <img src="${crop.cropImage && crop.cropImage.trim() !== '' ? crop.cropImage : 'https:///300x200'}"
                         class="crop-image"
                         onerror="this.src='https://via.placeholder.com/300x200'"
                     >

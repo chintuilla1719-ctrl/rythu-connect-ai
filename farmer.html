@@ -319,7 +319,7 @@
                 event.target.classList.add('active');
             }
         }
-
+window.switchFarmerTab = switchFarmerTab;
         function resetCropForm() {
             currentEditCropId = null;
             document.getElementById('cropFormButton').textContent = 'Add Crop';
@@ -388,10 +388,10 @@
                 <div class="crop-card">
 
                     <img
-                        src="${crop.cropImage && crop.cropImage.trim() !== '' ? crop.cropImage : 'https://picsum.photos/300/200''}"
+                        src="${crop.cropImage && crop.cropImage.trim() !== '' ? crop.cropImage : 'https://picsum.photos/300/200'}"
                         alt="${crop.cropName}"
                         class="crop-image"
-                        onerror="this.src='https://picsum.photos/300/200''}"
+                        onerror="this.src='https://picsum.photos/300/200'}"
                     >
 
                     <div class="crop-details">
