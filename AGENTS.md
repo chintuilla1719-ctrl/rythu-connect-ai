@@ -10,7 +10,7 @@ Rythu Connect AI uses multiple intelligent agents to assist farmers in making be
 
 ## System Workflow
 
-User Input → Agent Processing → Analysis → Response Generation → User Output
+User Input → Agent Processing → Analysis → Response Generation → User output
 
 ---
 
@@ -22,10 +22,10 @@ Recommend suitable crops based on environmental and soil conditions.
 
 ### Inputs
 
-* Soil Type
-* Temperature
-* Humidity
-* Rainfall
+- Soil Type
+- Temperature
+- Humidity
+- Rainfall
 
 ### Processing
 
@@ -33,15 +33,15 @@ Analyzes agricultural data and compares it with crop requirements.
 
 ### Outputs
 
-* Recommended Crops
-* Suitability Score
-* Farming Suggestions
+- Recommended Crops
+- Suitability Score
+- Farming Suggestions
 
 ### Benefits
 
-* Better crop selection
-* Increased productivity
-* Reduced farming risk
+- Better crop selection
+- Increased productivity
+- Reduced farming risk
 
 ---
 
@@ -53,8 +53,8 @@ Detect plant diseases using crop images.
 
 ### Inputs
 
-* Plant Leaf Image
-* Crop Type
+- Plant Leaf Image
+- Crop Type
 
 ### Processing
 
@@ -62,15 +62,15 @@ Uses image analysis and machine learning models to identify diseases.
 
 ### Outputs
 
-* Disease Name
-* Confidence Score
-* Treatment Suggestions
+- Disease Name
+- Confidence Score
+- Treatment Suggestions
 
 ### Benefits
 
-* Early disease detection
-* Reduced crop damage
-* Improved crop health
+- Early disease detection
+- Reduced crop damage
+- Improved crop health
 
 ---
 
@@ -82,8 +82,8 @@ Provide weather forecasts and alerts.
 
 ### Inputs
 
-* User Location
-* Date
+- User Location
+- Date
 
 ### Processing
 
@@ -91,15 +91,15 @@ Retrieves weather data from available sources.
 
 ### Outputs
 
-* Temperature
-* Humidity
-* Rainfall Forecast
-* Weather Alerts
+- Temperature
+- Humidity
+- Rainfall Forecast
+- Weather Alerts
 
 ### Benefits
 
-* Better farming planning
-* Improved irrigation management
+- Better farming planning
+- Improved irrigation management
 
 ---
 
@@ -111,8 +111,8 @@ Provide current market prices for crops.
 
 ### Inputs
 
-* Crop Name
-* Market Location
+- Crop Name
+- Market Location
 
 ### Processing
 
@@ -120,14 +120,14 @@ Collects and analyzes market price information.
 
 ### Outputs
 
-* Current Prices
-* Market Trends
-* Price Comparisons
+- Current Prices
+- Market Trends
+- Price Comparisons
 
 ### Benefits
 
-* Better selling decisions
-* Increased profitability
+- Better selling decisions
+- Increased profitability
 
 ---
 
@@ -139,8 +139,8 @@ Answer agricultural questions and provide farming guidance.
 
 ### Inputs
 
-* User Queries
-* Farming Context
+- User Queries
+- Farming Context
 
 ### Processing
 
@@ -148,14 +148,14 @@ Uses AI-based natural language understanding.
 
 ### Outputs
 
-* Answers
-* Recommendations
-* Best Practices
+- Answers
+- Recommendations
+- Best Practices
 
 ### Benefits
 
-* Easy access to information
-* Improved decision-making
+- Easy access to information
+- Improved decision-making
 
 ---
 
@@ -171,21 +171,21 @@ Uses AI-based natural language understanding.
 
 ## Advantages of Multi-Agent Architecture
 
-* Modular Design
-* Easy Maintenance
-* Better Performance
-* Scalability
-* Improved Accuracy
+- Modular Design
+- Easy Maintenance
+- Better Performance
+- Scalability
+- Improved Accuracy
 
 ---
 
 ## Future Enhancements
 
-* Voice-Based Agents
-* Regional Language Support
-* IoT Sensor Integration
-* Satellite Data Analysis
-* Advanced Predictive Analytics
+- Voice-Based Agents
+- Regional Language Support
+- IoT Sensor Integration
+- Satellite Data Analysis
+- Advanced Predictive Analytics
 
 ---
 

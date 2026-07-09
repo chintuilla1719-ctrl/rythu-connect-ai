@@ -1,11 +1,9 @@
 const express = require("express");
-const cors = require("cors");
 const mongoose = require("mongoose");
 const multer = require("multer");
-const fs = require("fs");
-const path = require("path");
+const fs = require("node:fs");
+const path = require("node:path");
 require("dotenv").config();
-const dns = require('dns').promises;
 
 const app = express();
 
@@ -16,11 +14,11 @@ if (!fs.existsSync(uploadDir)) {
 }
 
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, uploadDir),
-    filename: (req, file, cb) => {
+    destination: (_req, _file, cb) => cb(null, uploadDir),
+    filename: (_req, file, cb) => {
         const extension = path.extname(file.originalname);
         cb(null, `${Date.now()}-${file.fieldname}${extension}`);
-    }
+    },
 });
 
 const upload = multer({ storage });
@@ -28,44 +26,49 @@ const upload = multer({ storage });
 // Configure CORS for mobile compatibility
 // Mobile browsers require proper CORS headers for preflight requests
 app.use((req, res, next) => {
-    const origin = req.headers.origin || '*';
+    const origin = req.headers.origin || "*";
 
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, HEAD, PATCH');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Length');
-    res.header('Access-Control-Allow-Credentials', 'false');
-    res.header('Access-Control-Max-Age', '3600');
-    res.header('Vary', 'Origin');
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header(
+        "Access-Control-Allow-Methods",
+        "GET, POST, PUT, DELETE, OPTIONS, HEAD, PATCH",
+    );
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Length",
+    );
+    res.header("Access-Control-Allow-Credentials", "false");
+    res.header("Access-Control-Max-Age", "3600");
+    res.header("Vary", "Origin");
 
     // Handle preflight requests
-    if (req.method === 'OPTIONS') {
+    if (req.method === "OPTIONS") {
         console.log(`[CORS] Preflight request from ${origin}`);
         return res.sendStatus(200);
     }
     next();
 });
 
-app.use(express.json({ limit: '50mb' })); // Increase JSON limit for image uploads
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
+app.use(express.json({ limit: "50mb" })); // Increase JSON limit for image uploads
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(express.static(staticRoot));
-app.get("/", (req, res) => {
+app.get("/", (_req, res) => {
     res.sendFile(path.join(staticRoot, "index.html"));
 });
-app.get("/index.html", (req, res) => {
+app.get("/index.html", (_req, res) => {
     res.sendFile(path.join(staticRoot, "index.html"));
 });
 
 // MongoDB Connection
 // MongoDB Connection with SRV fallback for environments where Node cannot resolve SRV
-mongoose.connect(
-    process.env.MONGODB_URI
-)
-.then(() => {
-    console.log("MongoDB connected");
-})
-.catch((err) => {
-    console.error("MongoDB connection error:", err);
-});
+mongoose
+    .connect(process.env.MONGODB_URI)
+    .then(() => {
+        console.log("MongoDB connected");
+    })
+    .catch((err) => {
+        console.error("MongoDB connection error:", err);
+    });
 // ============ SCHEMAS ============
 
 // User Schema (Farmer & Buyer)
@@ -78,7 +81,7 @@ const userSchema = new mongoose.Schema({
     village: String,
     state: String,
     profilePhoto: String,
-    createdAt: { type: Date, default: Date.now }
+    createdAt: { type: Date, default: Date.now },
 });
 
 // Crop Schema
@@ -95,7 +98,7 @@ const cropSchema = new mongoose.Schema({
     state: String,
     harvestDate: Date,
     certifications: [String],
-    createdAt: { type: Date, default: Date.now }
+    createdAt: { type: Date, default: Date.now },
 });
 
 // Order Schema
@@ -108,10 +111,14 @@ const orderSchema = new mongoose.Schema({
     cropName: String,
     quantity: Number,
     totalPrice: Number,
-    status: { type: String, enum: ["pending", "confirmed", "shipped", "delivered"], default: "pending" },
+    status: {
+        type: String,
+        enum: ["pending", "confirmed", "shipped", "delivered"],
+        default: "pending",
+    },
     deliveryAddress: String,
     orderDate: { type: Date, default: Date.now },
-    expectedDelivery: Date
+    expectedDelivery: Date,
 });
 
 const User = mongoose.model("User", userSchema);
@@ -121,26 +128,50 @@ const Order = mongoose.model("Order", orderSchema);
 // ============ ROUTES ============
 
 // HEALTH CHECK - Simple endpoint to verify API is alive
-app.get("/api/health", (req, res) => {
-    res.json({ 
-        status: "ok", 
+app.get("/api/health", (_req, res) => {
+    res.json({
+        status: "ok",
         timestamp: new Date().toISOString(),
-        message: "Rythu Connect API is running"
+        message: "Rythu Connect API is running",
     });
 });
 
 // AUTH ROUTES
 app.post("/api/auth/register", async (req, res) => {
+    console.log("REGISTER REQUEST:", req.body);
+
     try {
-        const { fullName, email, password, phone, role, village, state } = req.body;
-        
+        const { fullName, email, password, phone, role, village, state } =
+            req.body;
+
+
         const userExists = await User.findOne({ email });
-        if (userExists) return res.status(400).json({ error: "Email already exists" });
-        
-        const user = new User({ fullName, email, password, phone, role, village, state });
+        if (userExists)
+            return res.status(400).json({ error: "Email already exists" });
+
+        const user = new User({
+            fullName,
+            email,
+            password,
+            phone,
+            role,
+            village,
+            state,
+        });
         await user.save();
-        
-        res.json({ message: "User registered successfully", user: { _id: user._id, email: user.email, role: user.role, fullName: user.fullName, village: user.village, state: user.state } });
+        console.log("User saved successfully:", user);
+
+        res.json({
+            message: "User registered successfully",
+            user: {
+                _id: user._id,
+                email: user.email,
+                role: user.role,
+                fullName: user.fullName,
+                village: user.village,
+                state: user.state,
+            },
+        });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -154,11 +185,17 @@ app.post("/api/auth/login", async (req, res) => {
 
         const user = await User.findOne({ email });
 
+        console.log("Email entered:", email);
         console.log("User found:", user);
+
+        if (user) {
+             console.log("Stored password:", user.password);
+            console.log("Entered password:", password);
+        }
 
         if (!user || user.password !== password) {
             return res.status(400).json({
-                error: "Invalid credentials"
+                error: "Invalid credentials",
             });
         }
 
@@ -170,10 +207,9 @@ app.post("/api/auth/login", async (req, res) => {
                 role: user.role,
                 fullName: user.fullName,
                 village: user.village,
-                state: user.state
-            }
+                state: user.state,
+            },
         });
-
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -183,7 +219,10 @@ app.post("/api/auth/login", async (req, res) => {
 app.post("/api/crops", upload.single("cropImage"), async (req, res) => {
     try {
         const certifications = req.body.certifications
-            ? String(req.body.certifications).split(",").map(c => c.trim()).filter(Boolean)
+            ? String(req.body.certifications)
+                  .split(",")
+                  .map((c) => c.trim())
+                  .filter(Boolean)
             : [];
 
         const cropData = {
@@ -198,7 +237,9 @@ app.post("/api/crops", upload.single("cropImage"), async (req, res) => {
             state: req.body.state,
             harvestDate: req.body.harvestDate || undefined,
             certifications,
-            cropImage: req.file ? `/uploads/${req.file.filename}` : "https://via.placeholder.com/300x200"
+            cropImage: req.file
+                ? `/uploads/${req.file.filename}`
+                : "https://via.placeholder.com/300x200",
         };
 
         const crop = new Crop(cropData);
@@ -212,8 +253,8 @@ app.post("/api/crops", upload.single("cropImage"), async (req, res) => {
 app.get("/api/crops", async (req, res) => {
     try {
         const { search, minPrice, maxPrice, state, farmerId } = req.query;
-        let query = {};
-        
+        const query = {};
+
         if (search) query.cropName = { $regex: search, $options: "i" };
         if (minPrice || maxPrice) {
             query.pricePerUnit = {};
@@ -222,7 +263,7 @@ app.get("/api/crops", async (req, res) => {
         }
         if (state) query.state = state;
         if (farmerId) query.farmerId = farmerId;
-        
+
         const crops = await Crop.find(query);
         res.json(crops);
     } catch (error) {
@@ -242,7 +283,10 @@ app.get("/api/crops/:id", async (req, res) => {
 app.put("/api/crops/:id", upload.single("cropImage"), async (req, res) => {
     try {
         const certifications = req.body.certifications
-            ? String(req.body.certifications).split(",").map(c => c.trim()).filter(Boolean)
+            ? String(req.body.certifications)
+                  .split(",")
+                  .map((c) => c.trim())
+                  .filter(Boolean)
             : undefined;
 
         const updateData = {
@@ -250,7 +294,9 @@ app.put("/api/crops/:id", upload.single("cropImage"), async (req, res) => {
             description: req.body.description,
             quantity: req.body.quantity ? Number(req.body.quantity) : undefined,
             unit: req.body.unit,
-            pricePerUnit: req.body.pricePerUnit ? Number(req.body.pricePerUnit) : undefined,
+            pricePerUnit: req.body.pricePerUnit
+                ? Number(req.body.pricePerUnit)
+                : undefined,
             village: req.body.village,
             state: req.body.state,
             harvestDate: req.body.harvestDate || undefined,
@@ -261,9 +307,15 @@ app.put("/api/crops/:id", upload.single("cropImage"), async (req, res) => {
             updateData.cropImage = `/uploads/${req.file.filename}`;
         }
 
-        Object.keys(updateData).forEach(key => updateData[key] === undefined && delete updateData[key]);
+        Object.keys(updateData).forEach((key) => {
+            if (updateData[key] === undefined) {
+                delete updateData[key];
+            }
+        });
 
-        const crop = await Crop.findByIdAndUpdate(req.params.id, updateData, { new: true });
+        const crop = await Crop.findByIdAndUpdate(req.params.id, updateData, {
+            new: true,
+        });
         res.json({ message: "Crop updated successfully", crop });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -282,7 +334,7 @@ app.delete("/api/crops/:id", async (req, res) => {
 // ORDER ROUTES
 app.post("/api/orders", async (req, res) => {
     try {
-        const orderId = "ORD-" + Date.now();
+        const orderId = `ORD-${Date.now()}`;
         const order = new Order({ orderId, ...req.body });
         await order.save();
         res.json({ message: "Order placed successfully", order });
@@ -294,10 +346,10 @@ app.post("/api/orders", async (req, res) => {
 app.get("/api/orders", async (req, res) => {
     try {
         const { buyerId, farmerId } = req.query;
-        let query = {};
+        const query = {};
         if (buyerId) query.buyerId = buyerId;
         if (farmerId) query.farmerId = farmerId;
-        
+
         const orders = await Order.find(query);
         res.json(orders);
     } catch (error) {
@@ -316,7 +368,9 @@ app.get("/api/orders/:id", async (req, res) => {
 
 app.put("/api/orders/:id", async (req, res) => {
     try {
-        const order = await Order.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const order = await Order.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+        });
         res.json({ message: "Order updated successfully", order });
     } catch (error) {
         res.status(500).json({ error: error.message });

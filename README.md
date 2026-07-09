@@ -9,31 +9,37 @@ Rythu Connect AI is an AI-powered agriculture platform designed to help farmers 
 ## 🚀 Features
 
 ### 🌱 AI Crop Disease Detection
+
 - Upload crop images
 - Detect plant diseases using AI
 - Get treatment recommendations
 
 ### 🌦 Weather Forecast
+
 - Real-time weather updates
 - Rainfall prediction
 - Temperature and humidity monitoring
 
 ### 💰 Market Prices
+
 - Check latest crop market rates
 - Compare prices across markets
 - Get selling recommendations
 
 ### 🛒 Buyer & Seller Connect
+
 - Connect farmers directly with buyers
 - Reduce dependency on middlemen
 - Improve profit margins
 
 ### 🧮 Farming Tools
+
 - Fertilizer Calculator
 - Pesticide Calculator
 - Yield Estimator
 
 ### 🌐 Multilingual Support
+
 - English
 - Telugu
 
@@ -42,26 +48,46 @@ Rythu Connect AI is an AI-powered agriculture platform designed to help farmers 
 ## 🛠 Technology Stack
 
 ### Frontend
+
 - HTML
 - CSS
 - JavaScript
-- React.js
 
 ### Backend
+
 - Node.js
 - Express.js
+  -bcryptjs
+- jsonwebtoken
 
 ### Database
+
 - MongoDB
 
-### AI & APIs
-- OpenAI API
-- Weather API
-- Crop Disease Detection Model
+### Platform
+
+- Local file upload support
+- REST API powered marketplace
+- JWT-based authentication
+
+---
 
 ---
 
 ## 📂 Project Structure
+
+Rythu-Connect-AI/
+│
+├── index.html
+├── style.css
+├── script.js
+├── buyer.html
+├── farmer.html
+├── README.md
+├── SETUP_GUIDE.md
+├── user_manual.md
+│
+└── assets/
 
 ---
 

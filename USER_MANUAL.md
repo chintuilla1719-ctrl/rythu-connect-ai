@@ -12,11 +12,11 @@ Rythu Connect AI is an intelligent agricultural assistance platform designed to 
 
 The purpose of Rythu Connect AI is to:
 
-* Help farmers select suitable crops.
-* Detect crop diseases at an early stage.
-* Provide weather-related information.
-* Display current market prices of crops.
-* Offer agricultural guidance and recommendations.
+- Help farmers select suitable crops.
+- Detect crop diseases at an early stage.
+- Provide weather-related information.
+- Display current market prices of crops.
+- Offer agricultural guidance and recommendations.
 
 ---
 
@@ -24,15 +24,15 @@ The purpose of Rythu Connect AI is to:
 
 ### Hardware Requirements
 
-* Laptop/Desktop Computer
-* Smartphone (Optional)
-* Stable Internet Connection
+- Laptop/Desktop Computer
+- Smartphone (Optional)
+- Stable Internet Connection
 
 ### Software Requirements
 
-* Windows/Linux/macOS
-* Google Chrome, Microsoft Edge, or Mozilla Firefox
-* Python 3.x (for local deployment)
+- Windows/Linux/macOS
+- Google Chrome, Microsoft Edge, or Mozilla Firefox
+- Python 3.x (for local deployment)
 
 ---
 
@@ -42,10 +42,10 @@ The purpose of Rythu Connect AI is to:
 
 Provides crop suggestions based on:
 
-* Soil Type
-* Temperature
-* Rainfall
-* Humidity
+- Soil Type
+- Temperature
+- Rainfall
+- Humidity
 
 ### Disease Detection
 
@@ -55,10 +55,10 @@ Allows users to upload crop images and identify diseases affecting plants.
 
 Provides:
 
-* Current Temperature
-* Humidity Levels
-* Rainfall Predictions
-* Weather Alerts
+- Current Temperature
+- Humidity Levels
+- Rainfall Predictions
+- Weather Alerts
 
 ### Market Price Information
 
@@ -137,9 +137,9 @@ http://localhost:5000
 
 ### Output
 
-* Recommended Crop Names
-* Suitability Information
-* Farming Suggestions
+- Recommended Crop Names
+- Suitability Information
+- Farming Suggestions
 
 ---
 
@@ -155,9 +155,9 @@ http://localhost:5000
 
 ### Output
 
-* Disease Name
-* Confidence Score
-* Suggested Treatment
+- Disease Name
+- Confidence Score
+- Suggested Treatment
 
 ---
 
@@ -172,10 +172,10 @@ http://localhost:5000
 
 ### Output
 
-* Temperature
-* Humidity
-* Rainfall Forecast
-* Weather Conditions
+- Temperature
+- Humidity
+- Rainfall Forecast
+- Weather Conditions
 
 ---
 
@@ -190,9 +190,9 @@ http://localhost:5000
 
 ### Output
 
-* Current Crop Prices
-* Market Trends
-* Selling Recommendations
+- Current Crop Prices
+- Market Trends
+- Selling Recommendations
 
 ---
 
@@ -202,37 +202,37 @@ http://localhost:5000
 
 Possible Causes:
 
-* Internet connection issue
-* Server not running
+- Internet connection issue
+- Server not running
 
 Solution:
 
-* Check network connection.
-* Restart application.
+- Check network connection.
+- Restart application.
 
 ### Login Failed
 
 Possible Causes:
 
-* Incorrect username
-* Incorrect password
+- Incorrect username
+- Incorrect password
 
 Solution:
 
-* Verify credentials.
-* Reset password if available.
+- Verify credentials.
+- Reset password if available.
 
 ### Data Not Loading
 
 Possible Causes:
 
-* API connection issue
-* Server issue
+- API connection issue
+- Server issue
 
 Solution:
 
-* Refresh page.
-* Check server status.
+- Refresh page.
+- Check server status.
 
 ---
 
@@ -258,22 +258,22 @@ Yes, the project is developed for educational and agricultural support purposes.
 
 ## 14. Benefits
 
-* Improves farming decisions.
-* Saves time and effort.
-* Provides quick agricultural insights.
-* Supports modern farming practices.
-* Increases productivity and efficiency.
+- Improves farming decisions.
+- Saves time and effort.
+- Provides quick agricultural insights.
+- Supports modern farming practices.
+- Increases productivity and efficiency.
 
 ---
 
 ## 15. Future Enhancements
 
-* Mobile Application
-* Voice Assistant Support
-* Multi-Language Support
-* Government Scheme Recommendations
-* Advanced AI Models
-* IoT Integration
+- Mobile Application
+- Voice Assistant Support
+- Multi-Language Support
+- Government Scheme Recommendations
+- Advanced AI Models
+- IoT Integration
 
 ---
 

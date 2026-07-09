@@ -1,0 +1,55 @@
+stages:
+    - secret_scan
+    - lint
+    - format
+    - type_check
+    - audit
+    - test
+    - coverage
+
+secret_scan:
+    stage: secret_scan
+    image: node:20
+    script:
+        - echo "Running secret scan"
+
+lint:
+    stage: lint
+    image: node:20
+    script:
+        - npm ci
+        - npx eslint .
+
+format:
+    stage: format
+    image: node:20
+    script:
+        - npm ci
+        - npx prettier --check .
+
+type_check:
+    stage: type_check
+    image: node:20
+    script:
+        - echo "No TypeScript configured"
+
+audit:
+    stage: audit
+    image: node:20
+    script:
+        - npm ci
+        - npm audit --audit-level=high
+
+test:
+    stage: test
+    image: node:20
+    script:
+        - npm ci
+        - npm test
+
+coverage:
+    stage: coverage
+    image: node:20
+    script:
+        - npm ci
+        - npm test -- --coverage
