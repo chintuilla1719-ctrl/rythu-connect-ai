@@ -138,9 +138,12 @@ app.get("/api/health", (_req, res) => {
 
 // AUTH ROUTES
 app.post("/api/auth/register", async (req, res) => {
+    console.log("REGISTER REQUEST:", req.body);
+
     try {
         const { fullName, email, password, phone, role, village, state } =
             req.body;
+
 
         const userExists = await User.findOne({ email });
         if (userExists)
@@ -156,6 +159,7 @@ app.post("/api/auth/register", async (req, res) => {
             state,
         });
         await user.save();
+        console.log("User saved successfully:", user);
 
         res.json({
             message: "User registered successfully",
@@ -181,7 +185,13 @@ app.post("/api/auth/login", async (req, res) => {
 
         const user = await User.findOne({ email });
 
+        console.log("Email entered:", email);
         console.log("User found:", user);
+
+        if (user) {
+             console.log("Stored password:", user.password);
+            console.log("Entered password:", password);
+        }
 
         if (!user || user.password !== password) {
             return res.status(400).json({
